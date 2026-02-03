@@ -1,0 +1,6 @@
+package com.ayoub.lockBox;
+
+public class Main {
+    public static void main(String[] args) {
+    }
+}
