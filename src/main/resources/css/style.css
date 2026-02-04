@@ -1,0 +1,204 @@
+.root {
+    -fx-font-family: "Segoe UI", "Arial", sans-serif;
+    -fx-font-size: 14px;
+    -fx-background-color: #EBF5FB;
+}
+
+.login-container {
+    -fx-background-color: #EBF5FB;
+    -fx-padding: 40px;
+}
+
+.icon-circle {
+    -fx-fill: #FFFFFF;
+    -fx-stroke: #1A5276;
+    -fx-stroke-width: 2.5;
+}
+
+.app-title {
+    -fx-font-size: 32px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #1A5276;
+}
+
+.app-subtitle {
+    -fx-font-size: 14px;
+    -fx-text-fill: #7F8C8D;
+}
+
+.input-label {
+    -fx-font-size: 13px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #2C3E50;
+}
+
+.password-input {
+    -fx-background-color: #F2F7FA;
+    -fx-border-color: #BDC3C7;
+    -fx-border-radius: 6px;
+    -fx-background-radius: 6px;
+    -fx-padding: 10px 15px;
+    -fx-font-size: 14px;
+    -fx-text-fill: #2C3E50;
+    -fx-pref-width: 340px;
+    -fx-pref-height: 38px;
+}
+
+.password-input:focused {
+    -fx-border-color: #1A5276;
+    -fx-border-width: 2px;
+    -fx-background-color: #FFFFFF;
+}
+
+.error-message {
+    -fx-font-size: 12px;
+    -fx-text-fill: #E74C3C;
+    -fx-padding: 4px 0;
+}
+
+.first-launch-box {
+    -fx-background-color: #FEF9E7;
+    -fx-border-color: #F39C12;
+    -fx-border-radius: 8px;
+    -fx-background-radius: 8px;
+    -fx-padding: 16px;
+}
+
+.first-launch-title {
+    -fx-font-size: 11px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #D68910;
+}
+
+.first-launch-text {
+    -fx-font-size: 11px;
+    -fx-text-fill: #7D6608;
+}
+
+/* ===================== BUTTONS ===================== */
+
+.btn-primary {
+    -fx-background-color: #1A5276;
+    -fx-text-fill: white;
+    -fx-font-size: 14px;
+    -fx-font-weight: bold;
+    -fx-background-radius: 6px;
+    -fx-padding: 12px 24px;
+    -fx-cursor: hand;
+}
+
+.btn-primary:hover {
+    -fx-background-color: #145A7A;
+}
+
+.btn-secondary {
+    -fx-background-color: #ECF0F1;
+    -fx-text-fill: #5D6D7E;
+    -fx-font-size: 13px;
+    -fx-border-color: #BDC3C7;
+    -fx-border-radius: 6px;
+    -fx-background-radius: 6px;
+    -fx-padding: 10px 20px;
+    -fx-cursor: hand;
+}
+
+.btn-danger {
+    -fx-background-color: #E74C3C;
+    -fx-text-fill: white;
+    -fx-font-size: 13px;
+    -fx-font-weight: bold;
+    -fx-background-radius: 6px;
+    -fx-padding: 10px 20px;
+    -fx-cursor: hand;
+}
+
+/* ===================== CARDS ===================== */
+
+.card {
+    -fx-background-color: #FAFAFA;
+    -fx-border-color: #E0E0E0;
+    -fx-border-radius: 8px;
+    -fx-background-radius: 8px;
+    -fx-padding: 12px;
+}
+
+/* ===================== TOP BAR ===================== */
+
+.topbar {
+    -fx-background-color: #1A5276;
+    -fx-padding: 10px 20px;
+}
+
+.topbar-text {
+    -fx-text-fill: white;
+    -fx-font-size: 14px;
+}
+
+/* ===================== SEARCH ===================== */
+
+.search-input {
+    -fx-background-color: #F2F7FA;
+    -fx-border-color: #BDC3C7;
+    -fx-border-radius: 6px;
+    -fx-background-radius: 6px;
+    -fx-padding: 8px 15px;
+    -fx-font-size: 13px;
+}
+
+/* ===================== MODAL ===================== */
+
+.modal-overlay {
+    -fx-background-color: rgba(0,0,0,0.5);
+}
+
+.modal-dialog {
+    -fx-background-color: white;
+    -fx-border-color: #1A5276;
+    -fx-border-width: 2px;
+    -fx-border-radius: 12px;
+    -fx-background-radius: 12px;
+    -fx-padding: 24px;
+}
+
+/* ===================== TOAST ===================== */
+
+.toast {
+    -fx-background-color: #2C3E50;
+    -fx-background-radius: 8px;
+    -fx-padding: 10px 20px;
+}
+
+.toast-text {
+    -fx-text-fill: white;
+    -fx-font-size: 11px;
+    -fx-font-weight: bold;
+}
+
+/* ===================== SCROLLBAR ===================== */
+
+.scroll-bar:vertical .track {
+    -fx-background-color: #F0F0F0;
+    -fx-background-radius: 4px;
+}
+
+.scroll-bar:vertical .thumb {
+    -fx-background-color: #BDC3C7;
+    -fx-background-radius: 4px;
+}
+
+/* ===================== LABELS ===================== */
+
+.label-bold {
+    -fx-font-weight: bold;
+    -fx-text-fill: #2C3E50;
+}
+
+.label-secondary {
+    -fx-text-fill: #5D6D7E;
+    -fx-font-size: 12px;
+}
+
+.label-small {
+    -fx-text-fill: #7F8C8D;
+    -fx-font-size: 11px;
+}
