@@ -8,7 +8,6 @@
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.StackPane?>
 <?import javafx.scene.shape.Circle?>
-
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.image.Image?>
 <VBox xmlns="http://javafx.com/javafx"
@@ -20,8 +19,8 @@
 
     <!-- Lock Icon -->
     <StackPane>
-        <Circle radius="42" styleClass="icon-circle"/>
-        <ImageView fitWidth="50" fitHeight="50" preserveRatio="true">
+        <Circle radius="50" styleClass="icon-circle"/>
+        <ImageView fitWidth="60" fitHeight="60" preserveRatio="true">
             <Image url="@/icons/lock.png"/>
         </ImageView>
     </StackPane>
@@ -37,7 +36,7 @@
     </VBox.margin>
 
     <!-- Input Section -->
-    <VBox alignment="CENTER" spacing="12" maxWidth="340">
+    <VBox alignment="CENTER" spacing="12" maxWidth="300">
         <Label text="Master Password" styleClass="input-label"/>
         <PasswordField fx:id="passwordField"
                        promptText="Enter your master password"
@@ -56,22 +55,22 @@
         </VBox.margin>
     </VBox>
 
-    <!-- Unlock Button -->
+
     <!-- Unlock Button -->
     <HBox alignment="CENTER">
         <Button fx:id="unlockButton"
                 styleClass="btn-primary"
                 onAction="#handleUnlock"
                 defaultButton="true"
-                maxWidth="240"
-                minWidth="240"
+                maxWidth="300"
+                minWidth="300"
                 minHeight="42">
             <graphic>
                 <HBox spacing="8" alignment="CENTER">
                     <ImageView fitWidth="20" fitHeight="20" preserveRatio="true">
                         <Image url="@/icons/unlock.png"/>
                     </ImageView>
-                    <Label text="Unlock" style="-fx-text-fill: white;"/>
+                    <Label text="Unlock"/>
                 </HBox>
             </graphic>
         </Button>

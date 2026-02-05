@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.image.Image?>
+
+<BorderPane xmlns="http://javafx.com/javafx"
+            xmlns:fx="http://javafx.com/fxml"
+            fx:controller="com.ayoub.lockBox.ui.DashboardController"
+            styleClass="dashboard-container">
+
+    <!-- MAIN CONTENT -->
+    <center>
+        <VBox spacing="16" styleClass="dashboard-main">
+            <padding>
+                <Insets top="20" right="20" bottom="20" left="20"/>
+            </padding>
+
+            <!-- SEARCH BAR -->
+            <HBox styleClass="search-input" alignment="CENTER_LEFT" spacing="8">
+                <ImageView fitWidth="18" fitHeight="18" preserveRatio="true">
+                    <Image url="@/icons/search.png"/>
+                </ImageView>
+                <TextField fx:id="searchField"
+                           promptText="Search accounts..."
+                           styleClass="search-field"
+                           HBox.hgrow="ALWAYS"/>
+            </HBox>
+
+            <!-- FILTER BUTTONS -->
+            <HBox spacing="8" alignment="CENTER_LEFT">
+                <Button fx:id="filterAll" text="All" styleClass="filter-btn-active" onAction="#filterAll"/>
+
+                <Button fx:id="filterEmail" styleClass="filter-btn" onAction="#filterEmail">
+                    <graphic>
+                        <HBox spacing="6" alignment="CENTER">
+                            <ImageView fitWidth="16" fitHeight="16" preserveRatio="true">
+                                <Image url="@/icons/gmail.png"/>
+                            </ImageView>
+                            <Label text="Email" styleClass="filter-label"/>
+                        </HBox>
+                    </graphic>
+                </Button>
+
+                <Button fx:id="filterFacebook" styleClass="filter-btn" onAction="#filterFacebook">
+                    <graphic>
+                        <HBox spacing="6" alignment="CENTER">
+                            <ImageView fitWidth="16" fitHeight="16" preserveRatio="true">
+                                <Image url="@/icons/facebook.png"/>
+                            </ImageView>
+                            <Label text="Facebook" styleClass="filter-label"/>
+                        </HBox>
+                    </graphic>
+                </Button>
+
+                <Button fx:id="filterInstagram" styleClass="filter-btn" onAction="#filterInstagram">
+                    <graphic>
+                        <HBox spacing="6" alignment="CENTER">
+                            <ImageView fitWidth="16" fitHeight="16" preserveRatio="true">
+                                <Image url="@/icons/instagram.png"/>
+                            </ImageView>
+                            <Label text="Instagram" styleClass="filter-label"/>
+                        </HBox>
+                    </graphic>
+                </Button>
+
+                <Button fx:id="filterLinkedin" styleClass="filter-btn" onAction="#filterLinkedin">
+                    <graphic>
+                        <HBox spacing="6" alignment="CENTER">
+                            <ImageView fitWidth="16" fitHeight="16" preserveRatio="true">
+                                <Image url="@/icons/linkedin.png"/>
+                            </ImageView>
+                            <Label text="Linkedin" styleClass="filter-label"/>
+                        </HBox>
+                    </graphic>
+                </Button>
+
+                <Button fx:id="filterOther" text="Other" styleClass="filter-btn" onAction="#filterOther"/>
+            </HBox>
+
+            <!-- ACCOUNT LIST (Scrollable) -->
+            <ScrollPane fitToWidth="true" styleClass="account-scroll" VBox.vgrow="ALWAYS">
+                <VBox fx:id="accountListContainer" spacing="12" styleClass="account-list"/>
+            </ScrollPane>
+
+            <!-- ADD BUTTON -->
+            <StackPane>
+                <Button fx:id="addButton"
+                        text="+"
+                        styleClass="fab-button"
+                        onAction="#handleAddAccount"
+                        StackPane.alignment="BOTTOM_RIGHT">
+                    <StackPane.margin>
+                        <Insets right="30" bottom="30"/>
+                    </StackPane.margin>
+                </Button>
+            </StackPane>
+
+        </VBox>
+    </center>
+</BorderPane>
