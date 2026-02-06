@@ -111,7 +111,7 @@
 
     <!-- Buttons -->
     <HBox spacing="16" alignment="CENTER">
-        <Button styleClass="btn-primary-form" onAction="#handleSave" HBox.hgrow="ALWAYS" maxWidth="Infinity">
+        <Button styleClass="btn-form" onAction="#handleSave" HBox.hgrow="ALWAYS" maxWidth="Infinity">
             <graphic>
                 <HBox spacing="8" alignment="CENTER">
                     <ImageView fitWidth="18" fitHeight="18" preserveRatio="true">
@@ -122,13 +122,13 @@
             </graphic>
         </Button>
 
-        <Button styleClass="btn-secondary-form" onAction="#handleCancel" HBox.hgrow="ALWAYS" maxWidth="Infinity">
+        <Button styleClass="btn-form" onAction="#handleCancel" HBox.hgrow="ALWAYS" maxWidth="Infinity">
             <graphic>
                 <HBox spacing="8" alignment="CENTER">
                     <ImageView fitWidth="18" fitHeight="18" preserveRatio="true">
                         <Image url="@/icons/close.png"/>
                     </ImageView>
-                    <Label text="Cancel" styleClass="btn-label-secondary"/>
+                    <Label text="Cancel" styleClass="btn-label"/>
                 </HBox>
             </graphic>
         </Button>

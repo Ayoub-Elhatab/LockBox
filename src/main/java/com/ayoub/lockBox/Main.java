@@ -5,6 +5,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.image.Image;
+import javafx.scene.text.Font;
 import javafx.stage.Stage;
 import java.util.Objects;
 
@@ -16,6 +17,11 @@ public class Main extends Application {
 
         Scene scene = new Scene(root, 700, 900);
         scene.getStylesheets().add(Objects.requireNonNull(getClass().getResource("/css/style.css")).toExternalForm());
+
+        // load fonts
+        Font.loadFont(Objects.requireNonNull(getClass().getResource("/fonts/PatrickHand-Regular.ttf")).toExternalForm(), 14);
+        Font.loadFont(Objects.requireNonNull(getClass().getResource("/fonts/BitcountSingle-Regular.ttf")).toExternalForm(), 14);
+
         primaryStage.getIcons().add(new Image(Objects.requireNonNull(getClass().getResourceAsStream("/icons/security.png"))));
 
         primaryStage.setTitle("LockBox");

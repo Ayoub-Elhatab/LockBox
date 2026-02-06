@@ -23,7 +23,7 @@
     -dashboard-bg: #F9FCFF;
 
     /* ===================== GLOBAL ===================== */
-    -fx-font-family: "Segoe UI", "Arial", sans-serif;
+    -fx-font-family: "Patrick Hand";
     -fx-font-size: 14px;
     -fx-background-color: #EBF5FB;
 }
@@ -41,18 +41,19 @@
 }
 
 .app-title {
-    -fx-font-size: 32px;
+    -fx-font-size: 36px;
+    -fx-font-family: "Bitcount Single";
     -fx-font-weight: bold;
     -fx-text-fill: -dark-text;
 }
 
 .app-subtitle {
-    -fx-font-size: 16px;
+    -fx-font-size: 18px;
     -fx-text-fill: -dark-text;
 }
 
 .input-label {
-    -fx-font-size: 18px;
+    -fx-font-size: 20px;
     -fx-font-weight: bold;
     -fx-text-fill: -dark-text;
 }
@@ -65,7 +66,7 @@
     -fx-text-fill: -medium-text;
     -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.12), 10, 0.15, 0, 4);
     -fx-padding: 10px 15px;
-    -fx-font-size: 14px;
+    -fx-font-size: 16px;
     -fx-pref-height: 38px;
 }
 
@@ -81,7 +82,7 @@
 }
 
 .error-message {
-    -fx-font-size: 14px;
+    -fx-font-size: 15px;
     -fx-text-fill: -error-red;
     -fx-padding: 4px 0;
 }
@@ -110,7 +111,7 @@
     -fx-background-radius: 8;
     -fx-border-radius: 8;
     -fx-text-fill: -dark-text;
-    -fx-font-size: 15px;
+    -fx-font-size: 17px;
     -fx-cursor: hand;
     -fx-padding: 12px 24px;
     -fx-font-weight: bold;
@@ -142,7 +143,7 @@
     -fx-border-radius: 10;
     -fx-border-color: transparent;
     -fx-padding: 10px 16px;
-    -fx-font-size: 15px;
+    -fx-font-size: 17px;
     -fx-pref-height: 42px;
     -fx-text-fill: -medium-text;
     -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.12), 10, 0.15, 0, 4);
@@ -158,15 +159,35 @@
     -fx-effect: dropshadow(gaussian, rgba(26,82,118,0.35), 12, 0.2, 0, 4);
 }
 
+.search-field {
+    -fx-background-color: transparent;
+    -fx-border-color: transparent;
+    -fx-font-size: 14px;
+    -fx-text-fill: -medium-text;
+}
+
+.search-field:focused {
+    -fx-background-color: transparent;
+    -fx-border-color: transparent;
+    -fx-background-insets: 0;
+    -fx-focus-color: transparent;
+    -fx-faint-focus-color: transparent;
+}
+
 .filter-btn {
     -fx-background-color: -light-gray;
     -fx-background-radius: 8;
     -fx-border-radius: 8;
     -fx-text-fill: -dark-text;
-    -fx-font-size: 14px;
+    -fx-font-size: 16px;
     -fx-cursor: hand;
-    -fx-padding: 10px 23px;
+    -fx-padding: 11px 24px;
     -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.18), 8, 0.2, 0, 6);
+}
+
+.filter-label {
+    -fx-text-fill: -dark-text;
+    -fx-font-size: 16px;
 }
 
 .filter-btn:hover {
@@ -179,12 +200,16 @@
     -fx-background-radius: 8;
     -fx-border-radius: 8;
     -fx-text-fill: white;
-    -fx-font-size: 14px;
+    -fx-font-size: 16px;
     -fx-font-weight: bold;
     -fx-cursor: default;
-    -fx-padding: 10px 23px;
+    -fx-padding: 11px 24px;
     -fx-translate-y: 4;
     -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.25), 3, 0.1, 0, 2);
+}
+
+.filter-btn-active .label {
+    -fx-text-fill: white;
 }
 
 .filter-btn-active:hover {
@@ -250,10 +275,10 @@
 }
 
 .fab-button {
-    -fx-min-width: 56px;
-    -fx-min-height: 56px;
-    -fx-max-width: 56px;
-    -fx-max-height: 56px;
+    -fx-min-width: 52px;
+    -fx-min-height: 52px;
+    -fx-max-width: 52px;
+    -fx-max-height: 52px;
     -fx-background-color: -light-gray;
     -fx-background-radius: 50%;
     -fx-border-radius: 50%;
@@ -265,30 +290,6 @@
 .fab-button:hover {
     -fx-translate-y: 3;
     -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.18), 6, 0.2, 0, 3);
-}
-
-.search-field {
-    -fx-background-color: transparent;
-    -fx-border-color: transparent;
-    -fx-font-size: 14px;
-    -fx-text-fill: -medium-text;
-}
-
-.search-field:focused {
-    -fx-background-color: transparent;
-    -fx-border-color: transparent;
-    -fx-background-insets: 0;
-    -fx-focus-color: transparent;
-    -fx-faint-focus-color: transparent;
-}
-
-.filter-label {
-    -fx-text-fill: -light-text;
-    -fx-font-size: 12.5px;
-}
-
-.filter-btn-active .label {
-    -fx-text-fill: white;
 }
 
 
@@ -305,7 +306,7 @@
 }
 
 .form-label {
-    -fx-font-size: 15px;
+    -fx-font-size: 17px;
     -fx-font-weight: 600;
     -fx-text-fill: -dark-text;
 }
@@ -391,30 +392,7 @@
     -fx-effect: dropshadow(gaussian, rgba(26,82,118,0.25), 14, 0.15, 0, 3);
 }
 
-.btn-primary-form {
-    -fx-background-color: -primary-blue;
-    -fx-background-radius: 12;
-    -fx-border-radius: 12;
-    -fx-cursor: hand;
-    -fx-padding: 16px 32px;
-    -fx-pref-height: 54px;
-    -fx-effect: dropshadow(gaussian, rgba(26,82,118,0.3), 10, 0.2, 0, 4);
-    -fx-transition: all 120ms ease-in-out;
-}
-
-.btn-primary-form:hover {
-    -fx-background-color: -primary-hover;
-    -fx-translate-y: 2;
-    -fx-effect: dropshadow(gaussian, rgba(26,82,118,0.25), 8, 0.15, 0, 2);
-}
-
-.btn-primary-form .btn-label {
-    -fx-text-fill: white;
-    -fx-font-size: 15px;
-    -fx-font-weight: bold;
-}
-
-.btn-secondary-form {
+.btn-form {
     -fx-background-color: -white;
     -fx-background-radius: 12;
     -fx-border-radius: 12;
@@ -425,13 +403,13 @@
     -fx-transition: all 120ms ease-in-out;
 }
 
-.btn-secondary-form:hover {
-    -fx-translate-y: 2;
-    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.1), 8, 0.1, 0, 2);
+.btn-form .btn-label {
+    -fx-text-fill: -dark-text;
+    -fx-font-size: 18px;
+    -fx-font-weight: 600;
 }
 
-.btn-secondary-form .btn-label-secondary {
-    -fx-text-fill: -dark-text;
-    -fx-font-size: 15px;
-    -fx-font-weight: 600;
+.btn-form:hover {
+    -fx-translate-y: 2;
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.1), 8, 0.1, 0, 2);
 }

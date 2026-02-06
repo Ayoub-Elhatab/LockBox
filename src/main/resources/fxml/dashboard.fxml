@@ -92,7 +92,7 @@
                         onAction="#handleAddAccount"
                         StackPane.alignment="BOTTOM_RIGHT">
                     <graphic>
-                        <ImageView fitWidth="24" fitHeight="24" preserveRatio="true">
+                        <ImageView fitWidth="30" fitHeight="30" preserveRatio="true">
                             <Image url="@/icons/plus.png"/>
                         </ImageView>
                     </graphic>
