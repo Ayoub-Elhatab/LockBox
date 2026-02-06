@@ -88,10 +88,14 @@
             <!-- ADD BUTTON -->
             <StackPane>
                 <Button fx:id="addButton"
-                        text="+"
                         styleClass="fab-button"
                         onAction="#handleAddAccount"
                         StackPane.alignment="BOTTOM_RIGHT">
+                    <graphic>
+                        <ImageView fitWidth="24" fitHeight="24" preserveRatio="true">
+                            <Image url="@/icons/plus.png"/>
+                        </ImageView>
+                    </graphic>
                     <StackPane.margin>
                         <Insets right="30" bottom="30"/>
                     </StackPane.margin>

@@ -1,0 +1,137 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.image.Image?>
+<VBox xmlns="http://javafx.com/javafx"
+      xmlns:fx="http://javafx.com/fxml"
+      fx:controller="com.ayoub.lockBox.ui.AccountFormController"
+      styleClass="form-container"
+      spacing="24"
+      prefWidth="600"
+      prefHeight="700">
+
+    <padding>
+        <Insets top="40" right="50" bottom="40" left="50"/>
+    </padding>
+
+    <!-- Form Header -->
+    <HBox alignment="CENTER_LEFT" spacing="12">
+        <ImageView fitWidth="32" fitHeight="32" preserveRatio="true">
+            <Image url="@/icons/plus.png"/>
+        </ImageView>
+        <Label fx:id="formTitle" text="Add Account" styleClass="form-title"/>
+    </HBox>
+
+    <!-- Label Input -->
+    <VBox spacing="10">
+        <HBox spacing="8" alignment="CENTER_LEFT">
+            <ImageView fitWidth="18" fitHeight="18" preserveRatio="true">
+                <Image url="@/icons/label.png"/>
+            </ImageView>
+            <Label text="Label" styleClass="form-label"/>
+        </HBox>
+        <TextField fx:id="labelField"
+                   promptText="e.g., Work Gmail"
+                   styleClass="form-input"/>
+    </VBox>
+
+    <!-- Category Dropdown -->
+    <VBox spacing="10">
+        <HBox spacing="8" alignment="CENTER_LEFT">
+            <ImageView fitWidth="18" fitHeight="18" preserveRatio="true">
+                <Image url="@/icons/category.png"/>
+            </ImageView>
+            <Label text="Category" styleClass="form-label"/>
+        </HBox>
+        <ComboBox fx:id="categoryComboBox"
+                  styleClass="form-combo"
+                  maxWidth="Infinity"/>
+    </VBox>
+
+    <!-- Username Input -->
+    <VBox spacing="10">
+        <HBox spacing="8" alignment="CENTER_LEFT">
+            <ImageView fitWidth="18" fitHeight="18" preserveRatio="true">
+                <Image url="@/icons/user.png"/>
+            </ImageView>
+            <Label text="Username" styleClass="form-label"/>
+        </HBox>
+        <TextField fx:id="usernameField"
+                   promptText="ayoub.lh@email.com"
+                   styleClass="form-input"/>
+    </VBox>
+
+    <!-- Password Input with Toggle -->
+    <VBox spacing="10">
+        <HBox spacing="8" alignment="CENTER_LEFT">
+            <ImageView fitWidth="18" fitHeight="18" preserveRatio="true">
+                <Image url="@/icons/password.png"/>
+            </ImageView>
+            <Label text="Password" styleClass="form-label"/>
+        </HBox>
+        <HBox styleClass="password-container" alignment="CENTER_LEFT">
+            <PasswordField fx:id="passwordField"
+                           promptText="Enter password"
+                           styleClass="password-input-field"
+                           HBox.hgrow="ALWAYS"/>
+            <TextField fx:id="passwordFieldVisible"
+                       promptText="Enter password"
+                       styleClass="password-input-field"
+                       visible="false"
+                       managed="false"
+                       HBox.hgrow="ALWAYS"/>
+            <Button fx:id="togglePasswordBtn"
+                    styleClass="password-toggle-btn"
+                    onAction="#togglePasswordVisibility">
+                <graphic>
+                    <ImageView fitWidth="20" fitHeight="20" preserveRatio="true">
+                        <Image url="@/icons/eye.png"/>
+                    </ImageView>
+                </graphic>
+            </Button>
+        </HBox>
+    </VBox>
+
+    <!-- Notes Textarea -->
+    <VBox spacing="10" VBox.vgrow="ALWAYS">
+        <HBox spacing="8" alignment="CENTER_LEFT">
+            <ImageView fitWidth="18" fitHeight="18" preserveRatio="true">
+                <Image url="@/icons/notes.png"/>
+            </ImageView>
+            <Label text="Notes (optional)" styleClass="form-label"/>
+        </HBox>
+        <TextArea fx:id="notesArea"
+                  promptText="Add any extra info here..."
+                  styleClass="form-textarea"
+                  prefRowCount="4"/>
+    </VBox>
+
+    <!-- Buttons -->
+    <HBox spacing="16" alignment="CENTER">
+        <Button styleClass="btn-primary-form" onAction="#handleSave" HBox.hgrow="ALWAYS" maxWidth="Infinity">
+            <graphic>
+                <HBox spacing="8" alignment="CENTER">
+                    <ImageView fitWidth="18" fitHeight="18" preserveRatio="true">
+                        <Image url="@/icons/save.png"/>
+                    </ImageView>
+                    <Label text="Save" styleClass="btn-label"/>
+                </HBox>
+            </graphic>
+        </Button>
+
+        <Button styleClass="btn-secondary-form" onAction="#handleCancel" HBox.hgrow="ALWAYS" maxWidth="Infinity">
+            <graphic>
+                <HBox spacing="8" alignment="CENTER">
+                    <ImageView fitWidth="18" fitHeight="18" preserveRatio="true">
+                        <Image url="@/icons/close.png"/>
+                    </ImageView>
+                    <Label text="Cancel" styleClass="btn-label-secondary"/>
+                </HBox>
+            </graphic>
+        </Button>
+    </HBox>
+
+</VBox>
