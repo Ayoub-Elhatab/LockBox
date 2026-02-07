@@ -31,7 +31,7 @@
             <ImageView fitWidth="18" fitHeight="18" preserveRatio="true">
                 <Image url="@/icons/label.png"/>
             </ImageView>
-            <Label text="Label" styleClass="form-label"/>
+            <Label text="LABEL" styleClass="form-label"/>
         </HBox>
         <TextField fx:id="labelField"
                    promptText="e.g., Work Gmail"
@@ -44,7 +44,7 @@
             <ImageView fitWidth="18" fitHeight="18" preserveRatio="true">
                 <Image url="@/icons/category.png"/>
             </ImageView>
-            <Label text="Category" styleClass="form-label"/>
+            <Label text="CATEGORY" styleClass="form-label"/>
         </HBox>
         <ComboBox fx:id="categoryComboBox"
                   styleClass="form-combo"
@@ -57,7 +57,7 @@
             <ImageView fitWidth="18" fitHeight="18" preserveRatio="true">
                 <Image url="@/icons/user.png"/>
             </ImageView>
-            <Label text="Username" styleClass="form-label"/>
+            <Label text="USERNAME" styleClass="form-label"/>
         </HBox>
         <TextField fx:id="usernameField"
                    promptText="ayoub.lh@email.com"
@@ -70,7 +70,7 @@
             <ImageView fitWidth="18" fitHeight="18" preserveRatio="true">
                 <Image url="@/icons/password.png"/>
             </ImageView>
-            <Label text="Password" styleClass="form-label"/>
+            <Label text="PASSWORD" styleClass="form-label"/>
         </HBox>
         <HBox styleClass="password-container" alignment="CENTER_LEFT">
             <PasswordField fx:id="passwordField"
@@ -101,7 +101,7 @@
             <ImageView fitWidth="18" fitHeight="18" preserveRatio="true">
                 <Image url="@/icons/notes.png"/>
             </ImageView>
-            <Label text="Notes (optional)" styleClass="form-label"/>
+            <Label text="NOTES (optional)" styleClass="form-label"/>
         </HBox>
         <TextArea fx:id="notesArea"
                   promptText="Add any extra info here..."

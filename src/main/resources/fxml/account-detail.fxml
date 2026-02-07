@@ -1,0 +1,124 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.image.Image?>
+
+<VBox xmlns="http://javafx.com/javafx"
+      xmlns:fx="http://javafx.com/fxml"
+      fx:controller="com.ayoub.lockBox.ui.AccountDetailController"
+      styleClass="detail-container"
+      spacing="24"
+      prefWidth="600"
+      prefHeight="700">
+
+    <padding>
+        <Insets top="40" right="50" bottom="40" left="50"/>
+    </padding>
+
+    <!-- Back Button -->
+    <HBox alignment="CENTER_LEFT" spacing="8">
+        <Button text="← Back" styleClass="btn-back" onAction="#handleBack"/>
+    </HBox>
+
+    <!-- Account Header -->
+    <VBox alignment="CENTER" spacing="16">
+        <StackPane>
+            <ImageView fx:id="categoryIcon" fitWidth="64" fitHeight="64" preserveRatio="true"/>
+        </StackPane>
+        <Label fx:id="accountLabel" text="Work Gmail" styleClass="detail-title"/>
+        <HBox alignment="CENTER">
+            <Label fx:id="categoryBadge" text="EMAIL" styleClass="category-badge"/>
+        </HBox>
+    </VBox>
+
+    <!-- Username Section -->
+    <VBox spacing="10">
+        <HBox spacing="8" alignment="CENTER_LEFT">
+            <ImageView fitWidth="18" fitHeight="18" preserveRatio="true">
+                <Image url="@/icons/user.png"/>
+            </ImageView>
+            <Label text="USERNAME" styleClass="detail-label"/>
+        </HBox>
+        <HBox styleClass="detail-field" alignment="CENTER_LEFT" spacing="12">
+            <Label fx:id="usernameLabel" text="ayoub.lh@gmail.com" styleClass="detail-value" HBox.hgrow="ALWAYS"/>
+            <Region HBox.hgrow="ALWAYS"/>
+            <Button styleClass="btn-copy" onAction="#copyUsername">
+                <graphic>
+                    <ImageView fitWidth="18" fitHeight="18" preserveRatio="true">
+                        <Image url="@/icons/copy.png"/>
+                    </ImageView>
+                </graphic>
+            </Button>
+        </HBox>
+    </VBox>
+
+    <!-- Password Section -->
+    <VBox spacing="10">
+        <HBox spacing="8" alignment="CENTER_LEFT">
+            <ImageView fitWidth="18" fitHeight="18" preserveRatio="true">
+                <Image url="@/icons/password.png"/>
+            </ImageView>
+            <Label text="PASSWORD" styleClass="detail-label"/>
+        </HBox>
+        <HBox styleClass="detail-field" alignment="CENTER_LEFT" spacing="12">
+            <Label fx:id="passwordLabel" text="••••••••••••" styleClass="detail-value"/>
+            <Region HBox.hgrow="ALWAYS"/>
+            <Button fx:id="togglePasswordBtn" styleClass="btn-toggle-detail" onAction="#togglePassword">
+                <graphic>
+                    <ImageView fitWidth="18" fitHeight="18" preserveRatio="true">
+                        <Image url="@/icons/eye.png"/>
+                    </ImageView>
+                </graphic>
+            </Button>
+            <Button styleClass="btn-copy" onAction="#copyPassword">
+                <graphic>
+                    <ImageView fitWidth="18" fitHeight="18" preserveRatio="true">
+                        <Image url="@/icons/copy.png"/>
+                    </ImageView>
+                </graphic>
+            </Button>
+        </HBox>
+    </VBox>
+
+    <!-- Notes Section -->
+    <VBox spacing="10" VBox.vgrow="ALWAYS">
+        <HBox spacing="8" alignment="CENTER_LEFT">
+            <ImageView fitWidth="18" fitHeight="18" preserveRatio="true">
+                <Image url="@/icons/notes.png"/>
+            </ImageView>
+            <Label text="NOTES" styleClass="detail-label"/>
+        </HBox>
+        <VBox styleClass="detail-field-notes">
+            <Label fx:id="notesLabel" text="No notes added." styleClass="detail-value-notes" wrapText="true"/>
+        </VBox>
+    </VBox>
+
+    <!-- Action Buttons -->
+    <HBox spacing="16" alignment="CENTER">
+        <Button styleClass="btn-form" onAction="#handleEdit" HBox.hgrow="ALWAYS" maxWidth="Infinity">
+            <graphic>
+                <HBox spacing="8" alignment="CENTER">
+                    <ImageView fitWidth="18" fitHeight="18" preserveRatio="true">
+                        <Image url="@/icons/edit.png"/>
+                    </ImageView>
+                    <Label text="Edit" styleClass="btn-label"/>
+                </HBox>
+            </graphic>
+        </Button>
+
+        <Button styleClass="btn-delete" onAction="#handleDelete" HBox.hgrow="ALWAYS" maxWidth="Infinity">
+            <graphic>
+                <HBox spacing="8" alignment="CENTER">
+                    <ImageView fitWidth="18" fitHeight="18" preserveRatio="true">
+                        <Image url="@/icons/delete.png"/>
+                    </ImageView>
+                    <Label text="Delete" styleClass="btn-label-delete"/>
+                </HBox>
+            </graphic>
+        </Button>
+    </HBox>
+
+</VBox>

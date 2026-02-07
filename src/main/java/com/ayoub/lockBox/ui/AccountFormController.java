@@ -3,7 +3,10 @@ package com.ayoub.lockBox.ui;
 import com.sun.javafx.fxml.builder.JavaFXImageBuilder;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
+import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+
+import java.util.Objects;
 
 public class AccountFormController {
 
@@ -49,7 +52,14 @@ public class AccountFormController {
             passwordField.setManaged(true);
             passwordFieldVisible.setVisible(false);
             passwordFieldVisible.setManaged(false);
-            togglePasswordBtn.setGraphic(new ImageView("/icons/eye.png"));
+
+            // Change icon to open eye
+            ImageView eyeIcon = new ImageView(new Image(Objects.requireNonNull(getClass().getResourceAsStream("/icons/eye.png"))));
+            eyeIcon.setFitWidth(20);
+            eyeIcon.setFitHeight(20);
+            eyeIcon.setPreserveRatio(true);
+            togglePasswordBtn.setGraphic(eyeIcon);
+
             isPasswordVisible = false;
         } else {
             // Show password
@@ -58,7 +68,14 @@ public class AccountFormController {
             passwordFieldVisible.setManaged(true);
             passwordField.setVisible(false);
             passwordField.setManaged(false);
-            togglePasswordBtn.setGraphic(new ImageView("/icons/closed-eye.png"));
+
+            // Change icon to closed eye
+            ImageView eyeClosedIcon = new ImageView(new Image(Objects.requireNonNull(getClass().getResourceAsStream("/icons/closed-eye.png"))));
+            eyeClosedIcon.setFitWidth(20);
+            eyeClosedIcon.setFitHeight(20);
+            eyeClosedIcon.setPreserveRatio(true);
+            togglePasswordBtn.setGraphic(eyeClosedIcon);
+
             isPasswordVisible = true;
         }
     }
