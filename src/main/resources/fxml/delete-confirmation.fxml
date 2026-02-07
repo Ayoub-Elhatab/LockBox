@@ -38,17 +38,33 @@
 
         <!-- Buttons -->
         <HBox spacing="12" alignment="CENTER">
-            <Button text="Cancel"
-                    styleClass="btn-cancel"
+            <Button styleClass="btn-form"
                     onAction="#handleCancel"
                     HBox.hgrow="ALWAYS"
-                    maxWidth="Infinity"/>
+                    maxWidth="Infinity">
+                <graphic>
+                    <HBox spacing="8" alignment="CENTER">
+                        <ImageView fitWidth="18" fitHeight="18" preserveRatio="true">
+                            <Image url="@/icons/close.png"/>
+                        </ImageView>
+                        <Label text="Cancel" styleClass="btn-label"/>
+                    </HBox>
+                </graphic>
+            </Button>
 
-            <Button text="Delete"
-                    styleClass="btn-delete-confirm"
+            <Button styleClass="btn-delete-confirm"
                     onAction="#handleConfirmDelete"
                     HBox.hgrow="ALWAYS"
-                    maxWidth="Infinity"/>
+                    maxWidth="Infinity">
+                <graphic>
+                    <HBox spacing="8" alignment="CENTER">
+                        <ImageView fitWidth="18" fitHeight="18" preserveRatio="true">
+                            <Image url="@/icons/delete.png"/>
+                        </ImageView>
+                        <Label text="Delete" styleClass="btn-delete-label"/>
+                    </HBox>
+                </graphic>
+            </Button>
         </HBox>
     </VBox>
 
