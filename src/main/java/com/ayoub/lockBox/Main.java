@@ -13,9 +13,11 @@ public class Main extends Application {
 
     @Override
     public void start(Stage primaryStage) throws Exception {
-        Parent root = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("/fxml/account-form.fxml")));
+        Parent root = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("/fxml/delete-confirmation.fxml")));
 
-        Scene scene = new Scene(root, 700, 900);
+//        Scene scene = new Scene(root, 700, 900);
+        Scene scene = new Scene(root, 400, 600);
+
         scene.getStylesheets().add(Objects.requireNonNull(getClass().getResource("/css/style.css")).toExternalForm());
 
         // load fonts

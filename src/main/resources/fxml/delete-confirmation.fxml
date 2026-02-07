@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.shape.Circle?>
+
+<StackPane xmlns="http://javafx.com/javafx"
+           xmlns:fx="http://javafx.com/fxml"
+           fx:controller="com.ayoub.lockBox.ui.DeleteConfirmController"
+           styleClass="modal-overlay">
+
+    <!-- Modal Dialog -->
+    <VBox styleClass="modal-dialog" spacing="20" alignment="CENTER" maxWidth="400">
+        <padding>
+            <Insets top="30" right="30" bottom="30" left="30"/>
+        </padding>
+
+        <!-- Warning Icon -->
+        <StackPane>
+            <Circle radius="40" styleClass="warning-circle"/>
+            <ImageView fitWidth="40" fitHeight="40" preserveRatio="true">
+                <Image url="@/icons/warning.png"/>
+            </ImageView>
+        </StackPane>
+
+        <!-- Title -->
+        <Label text="Delete Account" styleClass="modal-title"/>
+
+        <!-- Message -->
+        <VBox spacing="8" alignment="CENTER">
+            <Label text="Are you sure you want to delete" styleClass="modal-message"/>
+            <Label fx:id="accountNameLabel" text='"Work Gmail"?' styleClass="modal-message-bold"/>
+            <Label text="This action cannot be undone." styleClass="modal-warning"/>
+        </VBox>
+
+        <!-- Buttons -->
+        <HBox spacing="12" alignment="CENTER">
+            <Button text="Cancel"
+                    styleClass="btn-cancel"
+                    onAction="#handleCancel"
+                    HBox.hgrow="ALWAYS"
+                    maxWidth="Infinity"/>
+
+            <Button text="Delete"
+                    styleClass="btn-delete-confirm"
+                    onAction="#handleConfirmDelete"
+                    HBox.hgrow="ALWAYS"
+                    maxWidth="Infinity"/>
+        </HBox>
+    </VBox>
+
+</StackPane>
