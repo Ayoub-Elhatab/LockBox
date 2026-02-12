@@ -1,5 +1,7 @@
 package com.ayoub.lockBox.ui;
 
+import com.ayoub.lockBox.security.SecureCredentials;
+import com.ayoub.lockBox.service.AccountService;
 import com.ayoub.lockBox.storage.LockBoxStorage;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -31,7 +33,7 @@ public class LoginController {
     @FXML
     private void initialize() {
         // Check if LockBox file exists
-        if (!LockBoxStorage.lockBoxExists()) {
+        if (!AccountService.isFileExist()) {
             // First launch - show the info box and confirm field
             isFirstLaunch = true;
             firstLaunchBox.setVisible(true);
@@ -78,41 +80,51 @@ public class LoginController {
             return;
         }
 
+        SecureCredentials credentials = null;
         try {
+            credentials = new SecureCredentials(password);
             // Create new LockBox with empty accounts list
-            LockBoxStorage.createLockBox(password, new ArrayList<>());
+            AccountService.save(credentials, new ArrayList<>());
 
             // Go to dashboard
-            loadDashboard(password);
+            loadDashboard(credentials);
 
         } catch (Exception e) {
             showError("Failed to create LockBox: " + e.getMessage());
+            if (credentials != null) {
+                credentials.wipe();
+            }
         }
     }
 
     private void handleLogin(String password) {
+        SecureCredentials credentials = null;
         try {
+            credentials = new SecureCredentials(password);
             // Try to load vault with this password
-            LockBoxStorage.loadLockBox(password);
+            AccountService.load(credentials);
 
             // Success - go to dashboard
-            loadDashboard(password);
+            loadDashboard(credentials);
 
         } catch (Exception e) {
             // Wrong password or corrupted LockBox
             showError("Incorrect password. Try again.");
             passwordField.clear();
+            if (credentials != null) {
+                credentials.wipe();
+            }
         }
     }
 
-    private void loadDashboard(String masterPassword) {
+    private void loadDashboard(SecureCredentials credentials) {
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/dashboard.fxml"));
             Parent dashboard = loader.load();
 
-            // Pass master password to dashboard controller
+            // Pass credentials to dashboard controller
             DashboardController controller = loader.getController();
-            controller.setMasterPassword(masterPassword);
+            controller.setCredentials(credentials);
             controller.loadAccounts();
 
             // Get current stage and switch scene

@@ -1,7 +1,8 @@
 package com.ayoub.lockBox.ui;
 
 import com.ayoub.lockBox.model.Account;
-import com.ayoub.lockBox.storage.LockBoxStorage;
+import com.ayoub.lockBox.security.SecureCredentials;
+import com.ayoub.lockBox.service.AccountService;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -40,7 +41,7 @@ public class AccountFormController {
 
     private boolean isPasswordVisible = false;
     @Setter
-    private String masterPassword;
+    private SecureCredentials credentials;
     @Setter
     private DashboardController dashboardController;
     private Account editingAccount = null; // null = add mode, not null = edit mode
@@ -127,7 +128,7 @@ public class AccountFormController {
 
         try {
             // Load existing accounts
-            List<Account> accounts = LockBoxStorage.loadLockBox(masterPassword);
+            List<Account> accounts = AccountService.load(credentials);
 
             if (editingAccount != null) {
                 // Edit mode - update existing account
@@ -148,7 +149,7 @@ public class AccountFormController {
             }
 
             // Save updated accounts
-            LockBoxStorage.saveAccounts(masterPassword, accounts);
+            AccountService.save(credentials, accounts);
 
             // Go back to dashboard
             goBackToDashboard();
@@ -169,7 +170,7 @@ public class AccountFormController {
             Parent dashboard = loader.load();
 
             DashboardController controller = loader.getController();
-            controller.setMasterPassword(masterPassword);
+            controller.setCredentials(credentials);
             controller.loadAccounts();
 
             Stage stage = (Stage) labelField.getScene().getWindow();

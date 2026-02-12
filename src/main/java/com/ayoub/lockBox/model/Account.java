@@ -4,10 +4,11 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.Getter;
 import lombok.Setter;
+import java.util.UUID;
 
 @Getter
 @Setter
-@ToString
+@ToString(exclude = {"password", "username", "notes"})
 @EqualsAndHashCode
 public class Account {
     private String id;
@@ -30,7 +31,5 @@ public class Account {
         this.notes = notes;
     }
 
-    private String generateId() {
-        return System.currentTimeMillis() + "_" + (int)(Math.random() * 1000);
-    }
+    private String generateId() { return UUID.randomUUID().toString(); }
 }

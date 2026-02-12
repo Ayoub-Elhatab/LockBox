@@ -1,7 +1,9 @@
 package com.ayoub.lockBox.ui;
 
 import com.ayoub.lockBox.model.Account;
-import com.ayoub.lockBox.storage.LockBoxStorage;
+import com.ayoub.lockBox.model.Category;
+import com.ayoub.lockBox.security.SecureCredentials;
+import com.ayoub.lockBox.service.AccountService;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.geometry.Insets;
@@ -17,7 +19,9 @@ import javafx.scene.input.Clipboard;
 import javafx.scene.input.ClipboardContent;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
+import javafx.stage.Modality;
 import javafx.stage.Stage;
+import javafx.stage.StageStyle;
 import lombok.Setter;
 import java.util.ArrayList;
 import java.util.List;
@@ -54,9 +58,9 @@ public class DashboardController {
     private Button addButton;
 
     @Setter
-    private String masterPassword;
+    private SecureCredentials credentials;
     private List<Account> allAccounts = new ArrayList<>();
-    private String currentFilter = "All";
+    private Category currentFilter = Category.ALL;
 
     @FXML
     private void initialize() {
@@ -66,7 +70,7 @@ public class DashboardController {
 
     public void loadAccounts() {
         try {
-            allAccounts = LockBoxStorage.loadLockBox(masterPassword);
+            allAccounts = AccountService.load(credentials);
             displayAccounts(allAccounts);
         } catch (Exception e) {
             System.err.println("Failed to load accounts: " + e.getMessage());
@@ -170,6 +174,26 @@ public class DashboardController {
         return btn;
     }
 
+    private void viewAccountDetail(Account account) {
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/account-detail.fxml"));
+            Parent detail = loader.load();
+
+            AccountDetailController controller = loader.getController();
+            controller.setCredentials(credentials);
+            controller.setAccount(account);
+            controller.setDashboardController(this);
+
+            Stage stage = (Stage) accountListContainer.getScene().getWindow();
+            Scene scene = new Scene(detail, 600, 700);
+            scene.getStylesheets().add(Objects.requireNonNull(getClass().getResource("/css/style.css")).toExternalForm());
+            stage.setScene(scene);
+
+        } catch (Exception e) {
+            System.err.println("Failed to load account detail: " + e.getMessage());
+        }
+    }
+
     private void copyPassword(Account account) {
         Clipboard clipboard = Clipboard.getSystemClipboard();
         ClipboardContent content = new ClipboardContent();
@@ -185,68 +209,86 @@ public class DashboardController {
     }
 
     private void deleteAccount(Account account) {
-        System.out.println("Delete account: " + account.getLabel());
-        // TODO: Show delete confirmation dialog
+        try {
+            // Show delete confirmation modal
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/delete-confirmation.fxml"));
+            Parent modal = loader.load();
+
+            DeleteConfirmController controller = loader.getController();
+            controller.setAccountName(account.getLabel());
+
+            // Create modal stage
+            Stage modalStage = new Stage();
+            modalStage.initModality(Modality.APPLICATION_MODAL);
+            modalStage.initStyle(StageStyle.TRANSPARENT);
+
+            Scene scene = new Scene(modal);
+            scene.getStylesheets().add(Objects.requireNonNull(getClass().getResource("/css/style.css")).toExternalForm());
+
+            modalStage.setScene(scene);
+            modalStage.showAndWait();
+
+            // If confirmed, delete account
+            if (controller.isConfirmed()) {
+                performDelete(account);
+            }
+
+        } catch (Exception e) {
+            System.err.println("Failed to show delete confirmation: " + e.getMessage());
+        }
     }
 
-    private void viewAccountDetail(Account account) {
-//        try {
-//            FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/account-detail.fxml"));
-//            Parent detail = loader.load();
-//
-//            AccountDetailController controller = loader.getController();
-//            controller.setMasterPassword(masterPassword);
-//            controller.setAccount(account);
-//            controller.setDashboardController(this);
-//
-//            Stage stage = (Stage) accountListContainer.getScene().getWindow();
-//            Scene scene = new Scene(detail, 600, 700);
-//            scene.getStylesheets().add(getClass().getResource("/css/style.css").toExternalForm());
-//            stage.setScene(scene);
-//
-//        } catch (Exception e) {
-//            System.err.println("Failed to load account detail: " + e.getMessage());
-//        }
+    private void performDelete(Account account) {
+        try {
+            // Load all accounts
+            List<Account> accounts = AccountService.load(credentials);
+
+            // Remove account
+            accounts.removeIf(acc -> acc.getId().equals(account.getId()));
+
+            // Save updated list
+            AccountService.save(credentials, accounts);
+
+            // Refresh display
+            refreshAccounts();
+
+        } catch (Exception e) {
+            System.err.println("Failed to delete account: " + e.getMessage());
+        }
     }
 
     @FXML
     private void filterAll() {
-        currentFilter = "All";
-        updateFilterButtons();
-        filterAccounts();
+        applyFilter(Category.ALL);
     }
 
     @FXML
     private void filterEmail() {
-        currentFilter = "Email";
-        updateFilterButtons();
-        filterAccounts();
+        applyFilter(Category.EMAIL);
     }
 
     @FXML
     private void filterFacebook() {
-        currentFilter = "Facebook";
-        updateFilterButtons();
-        filterAccounts();
+        applyFilter(Category.FACEBOOK);
     }
 
     @FXML
     private void filterInstagram() {
-        currentFilter = "Instagram";
-        updateFilterButtons();
-        filterAccounts();
+        applyFilter(Category.INSTAGRAM);
     }
 
     @FXML
     private void filterLinkedin() {
-        currentFilter = "LinkedIn";
-        updateFilterButtons();
-        filterAccounts();
+        applyFilter(Category.LINKEDIN);
     }
 
     @FXML
     private void filterOther() {
-        currentFilter = "Other";
+        applyFilter(Category.OTHER);
+    }
+
+    private void applyFilter(Category category) {
+        currentFilter = category;
         updateFilterButtons();
         filterAccounts();
     }
@@ -269,12 +311,12 @@ public class DashboardController {
 
         // Add active class to selected
         Button activeButton = switch (currentFilter) {
-            case "Email" -> filterEmail;
-            case "Facebook" -> filterFacebook;
-            case "Instagram" -> filterInstagram;
-            case "LinkedIn" -> filterLinkedin;
-            case "Other" -> filterOther;
-            default -> filterAll;
+            case EMAIL -> filterEmail;
+            case FACEBOOK -> filterFacebook;
+            case INSTAGRAM -> filterInstagram;
+            case LINKEDIN -> filterLinkedin;
+            case OTHER -> filterOther;
+            case ALL -> filterAll;
         };
 
         activeButton.getStyleClass().remove("filter-btn");
@@ -287,7 +329,7 @@ public class DashboardController {
         List<Account> filtered = allAccounts.stream()
                 .filter(account -> {
                     // Filter by category
-                    if (!currentFilter.equals("All") && !account.getCategory().equalsIgnoreCase(currentFilter)) {
+                    if (currentFilter != Category.ALL && !account.getCategory().equalsIgnoreCase(currentFilter.getDisplayName())) {
                         return false;
                     }
                     // Filter by search text
@@ -310,7 +352,7 @@ public class DashboardController {
             Parent form = loader.load();
 
             AccountFormController controller = loader.getController();
-            controller.setMasterPassword(masterPassword);
+            controller.setCredentials(credentials);
             controller.setDashboardController(this);
 
             Stage stage = (Stage) addButton.getScene().getWindow();

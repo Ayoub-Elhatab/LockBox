@@ -82,7 +82,7 @@
 }
 
 .error-message {
-    -fx-font-size: 15px;
+    -fx-font-size: 16px;
     -fx-text-fill: -error-red;
     -fx-padding: 4px 0;
 }
@@ -96,13 +96,13 @@
 }
 
 .first-launch-title {
-    -fx-font-size: 11px;
+    -fx-font-size: 16px;
     -fx-font-weight: bold;
     -fx-text-fill: -warning-title;
 }
 
 .first-launch-text {
-    -fx-font-size: 11px;
+    -fx-font-size: 16px;
     -fx-text-fill: -warning-text;
 }
 
@@ -545,9 +545,7 @@
 
 .modal-dialog {
     -fx-background-color: -white;
-    -fx-background-radius: 16;
-    -fx-border-radius: 16;
-    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.3), 20, 0.3, 0, 10);
+    -fx-effect: dropshadow(gaussian, rgba(100,82,118,0.35), 12, 0.2, 0, 4);
 }
 
 .warning-circle {
