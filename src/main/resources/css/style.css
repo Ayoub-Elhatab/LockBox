@@ -600,3 +600,101 @@
     -fx-font-weight: bold;
 }
 
+/* ===================== CONTEXT MENU ===================== */
+
+.context-menu {
+    -fx-background-color: #FFFFFF;
+    -fx-background-radius: 12;
+    -fx-border-radius: 12;
+    -fx-border-color: #E0E0E0;
+    -fx-border-width: 1px;
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.2), 15, 0.15, 0, 5);
+    -fx-padding: 10px 0;
+    -fx-min-width: 200px;
+}
+
+.context-menu .menu-item {
+    -fx-background-color: transparent;
+    -fx-padding: 14px 24px;
+    -fx-font-size: 16px;
+    -fx-text-fill: #2C3E50;
+}
+
+.context-menu .menu-item:hover {
+    -fx-background-color: #F4F8FB;
+}
+
+.context-menu .menu-item:focused {
+    -fx-background-color: #E8F0F7;
+}
+
+.context-menu .menu-item .label {
+    -fx-text-fill: #2C3E50;
+    -fx-font-size: 16px;
+}
+
+.context-menu .separator {
+    -fx-padding: 4px 0;
+}
+
+.context-menu .separator .line {
+    -fx-border-color: #E8ECF0;
+    -fx-border-width: 1px 0 0 0;
+}
+
+/* ===================== ALERT DIALOG ===================== */
+
+.alert {
+    -fx-background-color: #FFFFFF;
+}
+
+.alert .dialog-pane {
+    -fx-background-color: #FFFFFF;
+    -fx-background-radius: 12;
+    -fx-border-radius: 12;
+    -fx-padding: 20px;
+}
+
+.alert .dialog-pane .header-panel {
+    -fx-background-color: transparent;
+    -fx-padding: 10px 0;
+}
+
+.alert .dialog-pane .header-panel .label {
+    -fx-font-size: 18px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #E74C3C;
+}
+
+.alert .dialog-pane .content {
+    -fx-padding: 15px 0;
+}
+
+.alert .dialog-pane .content .label {
+    -fx-font-size: 15px;
+    -fx-text-fill: #2C3E50;
+}
+
+.alert .dialog-pane .button-bar {
+    -fx-padding: 10px 0 0 0;
+}
+
+.alert .dialog-pane .button-bar .button {
+    -fx-background-color: -primary-blue;
+    -fx-text-fill: white;
+    -fx-font-size: 14px;
+    -fx-font-weight: bold;
+    -fx-background-radius: 8;
+    -fx-border-radius: 8;
+    -fx-padding: 10px 24px;
+    -fx-cursor: hand;
+}
+
+.alert .dialog-pane .button-bar .button:hover {
+    -fx-background-color: -primary-hover;
+}
+
+.alert .graphic-container {
+    -fx-padding: 0 15px 0 0;
+}
+

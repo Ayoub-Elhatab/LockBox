@@ -1,7 +1,7 @@
 package com.ayoub.lockBox.ui;
 
 import com.ayoub.lockBox.model.Account;
-import com.ayoub.lockBox.model.Category;
+import com.ayoub.lockBox.enums.Category;
 import com.ayoub.lockBox.security.SecureCredentials;
 import com.ayoub.lockBox.service.AccountService;
 import javafx.fxml.FXML;
@@ -10,13 +10,12 @@ import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.Button;
-import javafx.scene.control.Label;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.Clipboard;
 import javafx.scene.input.ClipboardContent;
+import javafx.scene.input.MouseButton;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.stage.Modality;
@@ -30,11 +29,6 @@ import java.util.stream.Collectors;
 
 public class DashboardController {
 
-    /**
-     * TODO :
-     *        add error dialog
-     *        when i small window when i click right that displays multiple choices
-     */
     @FXML
     private TextField searchField;
 
@@ -81,9 +75,31 @@ public class DashboardController {
         accountListContainer.getChildren().clear();
 
         if (accounts.isEmpty()) {
-            Label emptyLabel = new Label("No accounts yet. Click + to add one!");
-            emptyLabel.setStyle("-fx-font-size: 16px; -fx-text-fill: #7F8C8D; -fx-padding: 40px;");
-            accountListContainer.getChildren().add(emptyLabel);
+            VBox emptyState = new VBox(16);
+            emptyState.setAlignment(Pos.CENTER);
+            emptyState.setPadding(new Insets(190, 60, 60, 20));
+
+            // Icon
+            try {
+                ImageView emptyIcon = new ImageView(new Image(Objects.requireNonNull(getClass().getResourceAsStream("/icons/empty.png"))));
+                emptyIcon.setFitWidth(80);
+                emptyIcon.setFitHeight(80);
+                emptyIcon.setPreserveRatio(true);
+                emptyIcon.setOpacity(0.5);
+                emptyState.getChildren().add(emptyIcon);
+            } catch (Exception e) {
+                System.err.println("Empty icon not found");
+            }
+
+            Label emptyLabel = new Label("No accounts yet");
+            emptyLabel.setStyle("-fx-font-size: 24px; -fx-font-weight: bold; -fx-text-fill: #7F8C8D;");
+
+            Label emptySubLabel = new Label("Click + to add your first account");
+            emptySubLabel.setStyle("-fx-font-size: 19px; -fx-text-fill: #95A5A6;");
+
+            emptyState.getChildren().addAll(emptyLabel, emptySubLabel);
+            accountListContainer.getChildren().add(emptyState);
+            VBox.setVgrow(emptyState, javafx.scene.layout.Priority.ALWAYS);
             return;
         }
 
@@ -149,8 +165,34 @@ public class DashboardController {
 
         actions.getChildren().addAll(copyBtn, editBtn, deleteBtn);
 
-        // Make card clickable to view details
-        card.setOnMouseClicked(e -> viewAccountDetail(account));
+        // Create context menu (right-click menu)
+        ContextMenu contextMenu = new ContextMenu();
+
+        MenuItem viewDetailsItem = new MenuItem("View Details");
+        viewDetailsItem.setOnAction(e -> viewAccountDetail(account));
+
+        MenuItem copyPasswordItem = new MenuItem("Copy Password");
+        copyPasswordItem.setOnAction(e -> copyPassword(account));
+
+        MenuItem editItem = new MenuItem("Edit");
+        editItem.setOnAction(e -> editAccount(account));
+
+        MenuItem deleteItem = new MenuItem("Delete");
+        deleteItem.setOnAction(e -> deleteAccount(account));
+
+        contextMenu.getItems().addAll(viewDetailsItem, copyPasswordItem, editItem, deleteItem);
+
+        // Mouse click handler
+        card.setOnMouseClicked(e -> {
+            if (e.getButton() == MouseButton.PRIMARY) {
+                // Left click - view details
+                viewAccountDetail(account);
+            } else if (e.getButton() == MouseButton.SECONDARY) {
+                // Right click - show context menu
+                contextMenu.show(card, e.getScreenX(), e.getScreenY());
+            }
+        });
+
         card.setStyle(card.getStyle() + "-fx-cursor: hand;");
 
         card.getChildren().addAll(icon, info, actions);
@@ -184,10 +226,19 @@ public class DashboardController {
             controller.setAccount(account);
             controller.setDashboardController(this);
 
-            Stage stage = (Stage) accountListContainer.getScene().getWindow();
-            Scene scene = new Scene(detail, 600, 700);
+            // Create modal stage
+            Stage modalStage = new Stage();
+            modalStage.initModality(Modality.APPLICATION_MODAL);
+            modalStage.initOwner(accountListContainer.getScene().getWindow());
+
+            Scene scene = new Scene(detail, 600, 850);
             scene.getStylesheets().add(Objects.requireNonNull(getClass().getResource("/css/style.css")).toExternalForm());
-            stage.setScene(scene);
+
+            modalStage.getIcons().add(new Image(Objects.requireNonNull(getClass().getResourceAsStream("/icons/security.png"))));
+            modalStage.setScene(scene);
+            modalStage.setTitle("Account Details");
+            modalStage.setResizable(false);
+            modalStage.showAndWait();
 
         } catch (Exception e) {
             System.err.println("Failed to load account detail: " + e.getMessage());
@@ -204,8 +255,32 @@ public class DashboardController {
     }
 
     private void editAccount(Account account) {
-        System.out.println("Edit account: " + account.getLabel());
-        // TODO: Open account form in edit mode
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/account-form.fxml"));
+            Parent form = loader.load();
+
+            AccountFormController controller = loader.getController();
+            controller.setCredentials(credentials);
+            controller.setDashboardController(this);
+            controller.setEditMode(account);
+
+            // Create modal stage
+            Stage modalStage = new Stage();
+            modalStage.initModality(Modality.APPLICATION_MODAL);
+            modalStage.initOwner(accountListContainer.getScene().getWindow());
+
+            Scene scene = new Scene(form, 600, 850);
+            scene.getStylesheets().add(Objects.requireNonNull(getClass().getResource("/css/style.css")).toExternalForm());
+
+            modalStage.getIcons().add(new Image(Objects.requireNonNull(getClass().getResourceAsStream("/icons/security.png"))));
+            modalStage.setScene(scene);
+            modalStage.setTitle("Edit Account");
+            modalStage.setResizable(false);
+            modalStage.showAndWait();
+
+        } catch (Exception e) {
+            System.err.println("Failed to load account form: " + e.getMessage());
+        }
     }
 
     private void deleteAccount(Account account) {
@@ -355,10 +430,19 @@ public class DashboardController {
             controller.setCredentials(credentials);
             controller.setDashboardController(this);
 
-            Stage stage = (Stage) addButton.getScene().getWindow();
+            // Create modal stage
+            Stage modalStage = new Stage();
+            modalStage.initModality(Modality.APPLICATION_MODAL);
+            modalStage.initOwner(addButton.getScene().getWindow());
+
             Scene scene = new Scene(form, 600, 850);
             scene.getStylesheets().add(Objects.requireNonNull(getClass().getResource("/css/style.css")).toExternalForm());
-            stage.setScene(scene);
+
+            modalStage.getIcons().add(new Image(Objects.requireNonNull(getClass().getResourceAsStream("/icons/security.png"))));
+            modalStage.setScene(scene);
+            modalStage.setTitle("Add Account");
+            modalStage.setResizable(false);
+            modalStage.showAndWait();
 
         } catch (Exception e) {
             System.err.println("Failed to load account form: " + e.getMessage());
@@ -368,4 +452,6 @@ public class DashboardController {
     public void refreshAccounts() {
         loadAccounts();
     }
+
+
 }

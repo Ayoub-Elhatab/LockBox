@@ -151,11 +151,18 @@ public class AccountFormController {
             // Save updated accounts
             AccountService.save(credentials, accounts);
 
-            // Go back to dashboard
-            goBackToDashboard();
+            // Refresh dashboard if available
+            if (dashboardController != null) {
+                dashboardController.refreshAccounts();
+            }
+
+            // Close the modal window
+            Stage stage = (Stage) labelField.getScene().getWindow();
+            stage.close();
 
         } catch (Exception e) {
             showAlert("Error", "Failed to save account: " + e.getMessage());
+            e.printStackTrace();
         }
     }
 
@@ -165,22 +172,8 @@ public class AccountFormController {
     }
 
     private void goBackToDashboard() {
-        try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/dashboard.fxml"));
-            Parent dashboard = loader.load();
-
-            DashboardController controller = loader.getController();
-            controller.setCredentials(credentials);
-            controller.loadAccounts();
-
-            Stage stage = (Stage) labelField.getScene().getWindow();
-            Scene scene = new Scene(dashboard, 950, 700);
-            scene.getStylesheets().add(Objects.requireNonNull(getClass().getResource("/css/style.css")).toExternalForm());
-            stage.setScene(scene);
-
-        } catch (Exception e) {
-            System.err.println("Failed to load dashboard: " + e.getMessage());
-        }
+        Stage stage = (Stage) labelField.getScene().getWindow();
+        stage.close();
     }
 
     private void showAlert(String title, String message) {

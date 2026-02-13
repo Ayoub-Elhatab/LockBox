@@ -149,11 +149,19 @@ public class AccountDetailController {
         }
     }
 
+
+    @FXML
+    private void handleBack() {
+        Stage stage = (Stage) accountLabel.getScene().getWindow();
+        stage.close();
+    }
+
+
     @FXML
     private void handleDelete() {
         try {
             // Show delete confirmation modal
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/delete-confirm.fxml"));
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/delete-confirmation.fxml"));
             Parent modal = loader.load();
 
             DeleteConfirmController controller = loader.getController();
@@ -162,8 +170,13 @@ public class AccountDetailController {
             // Create modal stage
             Stage modalStage = new Stage();
             modalStage.initModality(Modality.APPLICATION_MODAL);
+            modalStage.initOwner(accountLabel.getScene().getWindow());
             modalStage.initStyle(StageStyle.TRANSPARENT);
-            modalStage.setScene(new Scene(modal));
+
+            Scene scene = new Scene(modal);
+            scene.getStylesheets().add(Objects.requireNonNull(getClass().getResource("/css/style.css")).toExternalForm());
+
+            modalStage.setScene(scene);
             modalStage.showAndWait();
 
             // If confirmed, delete account
@@ -187,31 +200,19 @@ public class AccountDetailController {
             // Save updated list
             AccountService.save(credentials, accounts);
 
-            // Go back to dashboard
-            handleBack();
+            // Refresh dashboard
+            if (dashboardController != null) {
+                dashboardController.refreshAccounts();
+            }
+
+            // Close detail window
+            Stage stage = (Stage) accountLabel.getScene().getWindow();
+            stage.close();
 
         } catch (Exception e) {
             System.err.println("Failed to delete account: " + e.getMessage());
         }
     }
 
-    @FXML
-    private void handleBack() {
-        try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/dashboard.fxml"));
-            Parent dashboard = loader.load();
 
-            DashboardController controller = loader.getController();
-            controller.setCredentials(credentials);
-            controller.loadAccounts();
-
-            Stage stage = (Stage) accountLabel.getScene().getWindow();
-            Scene scene = new Scene(dashboard, 950, 800);
-            scene.getStylesheets().add(Objects.requireNonNull(getClass().getResource("/css/style.css")).toExternalForm());
-            stage.setScene(scene);
-
-        } catch (Exception e) {
-            System.err.println("Failed to load dashboard: " + e.getMessage());
-        }
-    }
 }
