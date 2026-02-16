@@ -4,6 +4,7 @@ import com.ayoub.lockBox.model.Account;
 import com.ayoub.lockBox.enums.Category;
 import com.ayoub.lockBox.security.SecureCredentials;
 import com.ayoub.lockBox.service.AccountService;
+import com.ayoub.lockBox.utils.ToastUtil;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.geometry.Insets;
@@ -166,21 +167,7 @@ public class DashboardController {
         actions.getChildren().addAll(copyBtn, editBtn, deleteBtn);
 
         // Create context menu (right-click menu)
-        ContextMenu contextMenu = new ContextMenu();
-
-        MenuItem viewDetailsItem = new MenuItem("View Details");
-        viewDetailsItem.setOnAction(e -> viewAccountDetail(account));
-
-        MenuItem copyPasswordItem = new MenuItem("Copy Password");
-        copyPasswordItem.setOnAction(e -> copyPassword(account));
-
-        MenuItem editItem = new MenuItem("Edit");
-        editItem.setOnAction(e -> editAccount(account));
-
-        MenuItem deleteItem = new MenuItem("Delete");
-        deleteItem.setOnAction(e -> deleteAccount(account));
-
-        contextMenu.getItems().addAll(viewDetailsItem, copyPasswordItem, editItem, deleteItem);
+        ContextMenu contextMenu = createContextMenu(account);
 
         // Mouse click handler
         card.setOnMouseClicked(e -> {
@@ -199,7 +186,26 @@ public class DashboardController {
         return card;
     }
 
-    private Button createIconButton(String iconPath, String styleClass) {
+    private ContextMenu createContextMenu(Account account) {
+        ContextMenu contextMenu = new ContextMenu();
+
+        MenuItem viewDetailsItem = new MenuItem("View Details");
+        viewDetailsItem.setOnAction(e -> viewAccountDetail(account));
+
+        MenuItem copyPasswordItem = new MenuItem("Copy Password");
+        copyPasswordItem.setOnAction(e -> copyPassword(account));
+
+        MenuItem editItem = new MenuItem("Edit");
+        editItem.setOnAction(e -> editAccount(account));
+
+        MenuItem deleteItem = new MenuItem("Delete");
+        deleteItem.setOnAction(e -> deleteAccount(account));
+
+        contextMenu.getItems().addAll(viewDetailsItem, copyPasswordItem, editItem, deleteItem);
+        return contextMenu;
+    }
+
+        private Button createIconButton(String iconPath, String styleClass) {
         Button btn = new Button();
         btn.getStyleClass().add(styleClass);
 
@@ -247,8 +253,8 @@ public class DashboardController {
 
     private void copyPassword(Account account) {
         copyToClipboard(account.getPassword());
-        //showToast(account.getLabel(),"✓ Password copied!");
-        System.out.println("Password copied to clipboard");
+        Stage stage = (Stage) accountListContainer.getScene().getWindow();
+        ToastUtil.showToast(stage, "✓ Password copied!", 85);
     }
 
     private void editAccount(Account account) {

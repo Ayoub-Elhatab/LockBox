@@ -4,6 +4,7 @@ import com.ayoub.lockBox.model.Account;
 import com.ayoub.lockBox.security.SecureCredentials;
 import com.ayoub.lockBox.service.AccountService;
 import com.ayoub.lockBox.utils.IconUtil;
+import com.ayoub.lockBox.utils.ToastUtil;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -100,13 +101,15 @@ public class AccountDetailController {
     @FXML
     private void copyUsername() {
         copyToClipboard(usernameLabel.getText());
-        showToast(accountLabel,"✓ Username copied!");
+        Stage stage = (Stage) accountLabel.getScene().getWindow();
+        ToastUtil.showToast(stage, "✓ Username copied!", 117);
     }
 
     @FXML
     private void copyPassword() {
         copyToClipboard(currentAccount.getPassword());
-        showToast(accountLabel,"✓ Password copied!");
+        Stage stage = (Stage) accountLabel.getScene().getWindow();
+        ToastUtil.showToast(stage, "✓ Password copied!", 117);
     }
 
     @FXML

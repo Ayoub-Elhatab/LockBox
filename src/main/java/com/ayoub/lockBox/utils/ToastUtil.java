@@ -10,27 +10,21 @@ import javafx.util.Duration;
 
 public class ToastUtil {
 
-    public static void showToast(Label accountLabel, String message) {
+    public static void showToast(Stage stage, String message, double yOffset) {
         // Create toast label
         Label toast = new Label(message);
-        toast.setStyle("-fx-text-fill: green; -fx-padding: 12px 20px; -fx-background-radius: 8; -fx-font-size: 15px; -fx-font-weight: bold;");
-
-        // Wrap in transparent container
-        StackPane container = new StackPane(toast);
-        container.setStyle("-fx-background-color: #F4F8FB;");
+        toast.setStyle("-fx-background-color: #27AE60; -fx-text-fill: white; -fx-padding: 12px 20px; -fx-background-radius: 8; -fx-font-size: 16px; -fx-font-weight: bold;");
 
         // Create popup
         Popup popup = new Popup();
-        popup.getContent().add(container);
+        popup.getContent().add(toast);
         popup.setAutoHide(false);
 
-        // Get stage and position at bottom center
-        Stage stage = (Stage) accountLabel.getScene().getWindow();
-        Scene scene = accountLabel.getScene();
+        Scene scene = stage.getScene();
 
         // Calculate position
         double x = stage.getX() + (scene.getWidth() / 2) - 75;
-        double y = stage.getY() + scene.getHeight() - 113;
+        double y = stage.getY() + scene.getHeight() - yOffset;
 
         popup.show(stage, x, y);
 
