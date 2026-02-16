@@ -1,8 +1,7 @@
-package com.ayoub.lockBox.ui;
+package com.ayoub.lockBox.controllers;
 
 import com.ayoub.lockBox.security.SecureCredentials;
 import com.ayoub.lockBox.service.AccountService;
-import com.ayoub.lockBox.storage.LockBoxStorage;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;

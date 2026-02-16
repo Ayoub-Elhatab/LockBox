@@ -7,7 +7,7 @@
 <?import javafx.scene.image.Image?>
 <VBox xmlns="http://javafx.com/javafx"
       xmlns:fx="http://javafx.com/fxml"
-      fx:controller="com.ayoub.lockBox.ui.AccountFormController"
+      fx:controller="com.ayoub.lockBox.controllers.AccountFormController"
       styleClass="form-container"
       spacing="24"
       prefWidth="600"
@@ -33,9 +33,7 @@
             </ImageView>
             <Label text="LABEL" styleClass="form-label"/>
         </HBox>
-        <TextField fx:id="labelField"
-                   promptText="e.g., Work Gmail"
-                   styleClass="form-input"/>
+        <TextField fx:id="labelField" promptText="e.g., Work Gmail" styleClass="form-input"/>
     </VBox>
 
     <!-- Category Dropdown -->
@@ -46,9 +44,7 @@
             </ImageView>
             <Label text="CATEGORY" styleClass="form-label"/>
         </HBox>
-        <ComboBox fx:id="categoryComboBox"
-                  styleClass="form-combo"
-                  maxWidth="Infinity"/>
+        <ComboBox fx:id="categoryComboBox" styleClass="form-combo" maxWidth="Infinity"/>
     </VBox>
 
     <!-- Username Input -->
@@ -59,9 +55,7 @@
             </ImageView>
             <Label text="USERNAME" styleClass="form-label"/>
         </HBox>
-        <TextField fx:id="usernameField"
-                   promptText="ayoub.lh@email.com"
-                   styleClass="form-input"/>
+        <TextField fx:id="usernameField" promptText="ayoub.lh@email.com" styleClass="form-input"/>
     </VBox>
 
     <!-- Password Input with Toggle -->
@@ -73,19 +67,9 @@
             <Label text="PASSWORD" styleClass="form-label"/>
         </HBox>
         <HBox styleClass="password-container" alignment="CENTER_LEFT">
-            <PasswordField fx:id="passwordField"
-                           promptText="Enter password"
-                           styleClass="password-input-field"
-                           HBox.hgrow="ALWAYS"/>
-            <TextField fx:id="passwordFieldVisible"
-                       promptText="Enter password"
-                       styleClass="password-input-field"
-                       visible="false"
-                       managed="false"
-                       HBox.hgrow="ALWAYS"/>
-            <Button fx:id="togglePasswordBtn"
-                    styleClass="password-toggle-btn"
-                    onAction="#togglePasswordVisibility">
+            <PasswordField fx:id="passwordField" promptText="Enter password" styleClass="password-input-field" HBox.hgrow="ALWAYS"/>
+            <TextField fx:id="passwordFieldVisible" promptText="Enter password" styleClass="password-input-field" visible="false" managed="false" HBox.hgrow="ALWAYS"/>
+            <Button fx:id="togglePasswordBtn" styleClass="password-toggle-btn" onAction="#togglePasswordVisibility">
                 <graphic>
                     <ImageView fitWidth="20" fitHeight="20" preserveRatio="true">
                         <Image url="@/icons/eye.png"/>
@@ -103,10 +87,7 @@
             </ImageView>
             <Label text="NOTES (optional)" styleClass="form-label"/>
         </HBox>
-        <TextArea fx:id="notesArea"
-                  promptText="Add any extra info here..."
-                  styleClass="form-textarea"
-                  prefRowCount="4"/>
+        <TextArea fx:id="notesArea" promptText="Add any extra info here..." styleClass="form-textarea" prefRowCount="4"/>
     </VBox>
 
     <!-- Buttons -->
@@ -133,5 +114,4 @@
             </graphic>
         </Button>
     </HBox>
-
 </VBox>

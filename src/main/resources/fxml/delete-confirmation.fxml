@@ -6,10 +6,9 @@
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.shape.Circle?>
-
 <StackPane xmlns="http://javafx.com/javafx"
            xmlns:fx="http://javafx.com/fxml"
-           fx:controller="com.ayoub.lockBox.ui.DeleteConfirmController"
+           fx:controller="com.ayoub.lockBox.controllers.DeleteConfirmController"
            styleClass="modal-overlay">
 
     <!-- Modal Dialog -->
@@ -38,10 +37,7 @@
 
         <!-- Buttons -->
         <HBox spacing="12" alignment="CENTER">
-            <Button styleClass="btn-form"
-                    onAction="#handleCancel"
-                    HBox.hgrow="ALWAYS"
-                    maxWidth="Infinity">
+            <Button styleClass="btn-form" onAction="#handleCancel" HBox.hgrow="ALWAYS" maxWidth="Infinity">
                 <graphic>
                     <HBox spacing="8" alignment="CENTER">
                         <ImageView fitWidth="18" fitHeight="18" preserveRatio="true">
@@ -52,10 +48,7 @@
                 </graphic>
             </Button>
 
-            <Button styleClass="btn-delete-confirm"
-                    onAction="#handleConfirmDelete"
-                    HBox.hgrow="ALWAYS"
-                    maxWidth="Infinity">
+            <Button styleClass="btn-delete-confirm" onAction="#handleConfirmDelete" HBox.hgrow="ALWAYS" maxWidth="Infinity">
                 <graphic>
                     <HBox spacing="8" alignment="CENTER">
                         <ImageView fitWidth="18" fitHeight="18" preserveRatio="true">
@@ -67,5 +60,4 @@
             </Button>
         </HBox>
     </VBox>
-
 </StackPane>

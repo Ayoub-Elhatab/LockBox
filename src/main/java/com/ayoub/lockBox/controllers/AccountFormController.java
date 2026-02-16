@@ -1,17 +1,15 @@
-package com.ayoub.lockBox.ui;
+package com.ayoub.lockBox.controllers;
 
 import com.ayoub.lockBox.model.Account;
 import com.ayoub.lockBox.security.SecureCredentials;
 import com.ayoub.lockBox.service.AccountService;
+import com.ayoub.lockBox.utils.IconUtil;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
-import javafx.scene.Parent;
-import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.stage.Stage;
 import lombok.Setter;
 import java.util.List;
-import java.util.Objects;
+import static com.ayoub.lockBox.utils.AlertUtil.showAlert;
 
 public class AccountFormController {
 
@@ -40,10 +38,13 @@ public class AccountFormController {
     private TextArea notesArea;
 
     private boolean isPasswordVisible = false;
+
     @Setter
     private SecureCredentials credentials;
+
     @Setter
     private DashboardController dashboardController;
+
     private Account editingAccount = null; // null = add mode, not null = edit mode
 
     public void setEditMode(Account account) {
@@ -75,7 +76,7 @@ public class AccountFormController {
             passwordFieldVisible.setVisible(false);
             passwordFieldVisible.setManaged(false);
 
-            updateToggleIcon("/icons/eye.png");
+            IconUtil.updatePasswordIcon(togglePasswordBtn,"/icons/eye.png");
             isPasswordVisible = false;
         } else {
             // Show password
@@ -85,22 +86,8 @@ public class AccountFormController {
             passwordField.setVisible(false);
             passwordField.setManaged(false);
 
-            updateToggleIcon("/icons/closed-eye.png");
+            IconUtil.updatePasswordIcon(togglePasswordBtn,"/icons/closed-eye.png");
             isPasswordVisible = true;
-        }
-    }
-
-    private void updateToggleIcon(String iconPath) {
-        try {
-            javafx.scene.image.ImageView icon = new javafx.scene.image.ImageView(
-                    new javafx.scene.image.Image(Objects.requireNonNull(getClass().getResourceAsStream(iconPath)))
-            );
-            icon.setFitWidth(20);
-            icon.setFitHeight(20);
-            icon.setPreserveRatio(true);
-            togglePasswordBtn.setGraphic(icon);
-        } catch (Exception e) {
-            System.err.println("Failed to load icon: " + iconPath);
         }
     }
 
@@ -162,7 +149,7 @@ public class AccountFormController {
 
         } catch (Exception e) {
             showAlert("Error", "Failed to save account: " + e.getMessage());
-            e.printStackTrace();
+
         }
     }
 
@@ -176,11 +163,5 @@ public class AccountFormController {
         stage.close();
     }
 
-    private void showAlert(String title, String message) {
-        Alert alert = new Alert(Alert.AlertType.ERROR);
-        alert.setTitle(title);
-        alert.setHeaderText(null);
-        alert.setContentText(message);
-        alert.showAndWait();
-    }
+
 }

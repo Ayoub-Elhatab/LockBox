@@ -1,4 +1,4 @@
-package com.ayoub.lockBox.ui;
+package com.ayoub.lockBox.controllers;
 
 import com.ayoub.lockBox.model.Account;
 import com.ayoub.lockBox.enums.Category;
@@ -13,8 +13,6 @@ import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import javafx.scene.input.Clipboard;
-import javafx.scene.input.ClipboardContent;
 import javafx.scene.input.MouseButton;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
@@ -26,6 +24,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
+import static com.ayoub.lockBox.utils.ClipboardUtil.copyToClipboard;
 
 public class DashboardController {
 
@@ -53,6 +52,7 @@ public class DashboardController {
 
     @Setter
     private SecureCredentials credentials;
+
     private List<Account> allAccounts = new ArrayList<>();
     private Category currentFilter = Category.ALL;
 
@@ -223,8 +223,8 @@ public class DashboardController {
 
             AccountDetailController controller = loader.getController();
             controller.setCredentials(credentials);
-            controller.setAccount(account);
             controller.setDashboardController(this);
+            controller.setAccount(account);
 
             // Create modal stage
             Stage modalStage = new Stage();
@@ -246,12 +246,9 @@ public class DashboardController {
     }
 
     private void copyPassword(Account account) {
-        Clipboard clipboard = Clipboard.getSystemClipboard();
-        ClipboardContent content = new ClipboardContent();
-        content.putString(account.getPassword());
-        clipboard.setContent(content);
-        System.out.println("Password copied for: " + account.getLabel());
-        // TODO: Show toast notification
+        copyToClipboard(account.getPassword());
+        //showToast(account.getLabel(),"✓ Password copied!");
+        System.out.println("Password copied to clipboard");
     }
 
     private void editAccount(Account account) {
