@@ -16,7 +16,6 @@ public class Main extends Application {
         Parent root = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("/fxml/login.fxml")));
 
         Scene scene = new Scene(root, 600, 800);
-//        Scene scene = new Scene(root, 600, 1000);
 
         scene.getStylesheets().add(Objects.requireNonNull(getClass().getResource("/css/style.css")).toExternalForm());
 

@@ -56,13 +56,13 @@ public class LockBoxStorage {
         LockBoxData lockBoxData = gson.fromJson(lockBoxJson, LockBoxData.class);
 
         // Derive key from password using stored salt
-        byte[] salt = KeyDerivationService.decodeSalt(lockBoxData.getSalt());
+        byte[] salt = KeyDerivationService.decodeSalt(lockBoxData.salt());
         DerivedKey derivedKey = KeyDerivationService.deriveKey(credentials.getPassword(), salt);
 
         // Decrypt
         String accountsJson = EncryptionService.decrypt(
-                lockBoxData.getCiphertext(),
-                lockBoxData.getIv(),
+                lockBoxData.ciphertext(),
+                lockBoxData.iv(),
                 derivedKey.key()
         );
 

@@ -12,7 +12,7 @@
 <?import javafx.scene.image.Image?>
 <VBox xmlns="http://javafx.com/javafx"
       xmlns:fx="http://javafx.com/fxml"
-      fx:controller="com.ayoub.lockBox.ui.LoginController"
+      fx:controller="com.ayoub.lockBox.controllers.LoginController"
       styleClass="login-container"
       alignment="CENTER"
       spacing="20">
@@ -38,17 +38,10 @@
     <!-- Input Section -->
     <VBox alignment="CENTER" spacing="12" maxWidth="300">
         <Label text="Master Password" styleClass="input-label"/>
-        <PasswordField fx:id="passwordField"
-                       promptText="Enter your master password"
-                       styleClass="password-input"
-                       onAction="#handleUnlock"/>
+        <PasswordField fx:id="passwordField" promptText="Enter your master password" styleClass="password-input" onAction="#handleUnlock"/>
 
         <!-- Error Message (initially hidden) -->
-        <Label fx:id="errorLabel"
-               text="✕  Incorrect password. Try again."
-               styleClass="error-message"
-               visible="false"
-               managed="false"/>
+        <Label fx:id="errorLabel" text="✕  Incorrect password. Try again." styleClass="error-message" visible="false" managed="false"/>
 
         <VBox.margin>
             <Insets top="20"/>
@@ -58,13 +51,7 @@
 
     <!-- Unlock Button -->
     <HBox alignment="CENTER">
-        <Button fx:id="unlockButton"
-                styleClass="btn-primary"
-                onAction="#handleUnlock"
-                defaultButton="true"
-                maxWidth="300"
-                minWidth="300"
-                minHeight="42">
+        <Button fx:id="unlockButton" styleClass="btn-primary" onAction="#handleUnlock" defaultButton="true" maxWidth="300" minWidth="300" minHeight="42">
             <graphic>
                 <HBox spacing="8" alignment="CENTER">
                     <ImageView fitWidth="20" fitHeight="20" preserveRatio="true">
@@ -77,23 +64,13 @@
     </HBox>
 
     <!-- First Launch Info Box (initially hidden) -->
-    <VBox fx:id="firstLaunchBox"
-          alignment="CENTER"
-          spacing="8"
-          styleClass="first-launch-box"
-          maxWidth="340"
-          visible="false"
-          managed="false">
+    <VBox fx:id="firstLaunchBox" alignment="CENTER" spacing="8" styleClass="first-launch-box" maxWidth="340" visible="false" managed="false">
         <Label text="First Launch?" styleClass="first-launch-title"/>
         <Label text="Create your master password here." styleClass="first-launch-text"/>
         <Label text="A confirm field will appear." styleClass="first-launch-text"/>
 
         <!-- Confirm Password Field (only for first launch) -->
-        <PasswordField fx:id="confirmPasswordField"
-                       promptText="Confirm master password"
-                       styleClass="password-input"
-                       visible="false"
-                       managed="false"/>
+        <PasswordField fx:id="confirmPasswordField" promptText="Confirm master password" styleClass="password-input" visible="false" managed="false"/>
 
         <VBox.margin>
             <Insets top="20"/>

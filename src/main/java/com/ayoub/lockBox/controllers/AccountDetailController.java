@@ -1,8 +1,10 @@
-package com.ayoub.lockBox.ui;
+package com.ayoub.lockBox.controllers;
 
 import com.ayoub.lockBox.model.Account;
 import com.ayoub.lockBox.security.SecureCredentials;
 import com.ayoub.lockBox.service.AccountService;
+import com.ayoub.lockBox.utils.IconUtil;
+import com.ayoub.lockBox.utils.ToastUtil;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -11,15 +13,15 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import javafx.scene.input.Clipboard;
-import javafx.scene.input.ClipboardContent;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 import lombok.Setter;
-
 import java.util.List;
 import java.util.Objects;
+import static com.ayoub.lockBox.utils.AlertUtil.showAlert;
+import static com.ayoub.lockBox.utils.ClipboardUtil.copyToClipboard;
+import static com.ayoub.lockBox.utils.ToastUtil.showToast;
 
 public class AccountDetailController {
 
@@ -46,8 +48,10 @@ public class AccountDetailController {
 
     @Setter
     private SecureCredentials credentials;
+
     @Setter
     private DashboardController dashboardController;
+
     private Account currentAccount;
     private boolean isPasswordVisible = false;
 
@@ -61,9 +65,7 @@ public class AccountDetailController {
         accountLabel.setText(currentAccount.getLabel());
         categoryBadge.setText(currentAccount.getCategory().toUpperCase());
         usernameLabel.setText(currentAccount.getUsername());
-        notesLabel.setText(currentAccount.getNotes() != null && !currentAccount.getNotes().isEmpty()
-                ? currentAccount.getNotes()
-                : "No notes added.");
+        notesLabel.setText(currentAccount.getNotes() != null && !currentAccount.getNotes().isEmpty() ? currentAccount.getNotes() : "No notes added.");
 
         // Set category icon
         String iconPath = switch (currentAccount.getCategory().toLowerCase()) {
@@ -82,50 +84,32 @@ public class AccountDetailController {
     }
 
     @FXML
-    private void togglePassword() {
+    private void togglePasswordVisibility() {
         if (isPasswordVisible) {
             // Hide password
             passwordLabel.setText("••••••••••••");
-            updateToggleIcon("/icons/eye.png");
+            IconUtil.updatePasswordIcon(togglePasswordBtn,"/icons/eye.png");
             isPasswordVisible = false;
         } else {
             // Show password
             passwordLabel.setText(currentAccount.getPassword());
-            updateToggleIcon("/icons/closed-eye.png");
+            IconUtil.updatePasswordIcon(togglePasswordBtn,"/icons/closed-eye.png");
             isPasswordVisible = true;
-        }
-    }
-
-    private void updateToggleIcon(String iconPath) {
-        try {
-            ImageView icon = new ImageView(new Image(Objects.requireNonNull(getClass().getResourceAsStream(iconPath))));
-            icon.setFitWidth(18);
-            icon.setFitHeight(18);
-            icon.setPreserveRatio(true);
-            togglePasswordBtn.setGraphic(icon);
-        } catch (Exception e) {
-            System.err.println("Failed to load icon: " + iconPath);
         }
     }
 
     @FXML
     private void copyUsername() {
-        Clipboard clipboard = Clipboard.getSystemClipboard();
-        ClipboardContent content = new ClipboardContent();
-        content.putString(usernameLabel.getText());
-        clipboard.setContent(content);
-        System.out.println("Username copied!");
-        // TODO: Show toast notification
+        copyToClipboard(usernameLabel.getText());
+        Stage stage = (Stage) accountLabel.getScene().getWindow();
+        ToastUtil.showToast(stage, "✓ Username copied!", 117);
     }
 
     @FXML
     private void copyPassword() {
-        Clipboard clipboard = Clipboard.getSystemClipboard();
-        ClipboardContent content = new ClipboardContent();
-        content.putString(currentAccount.getPassword());
-        clipboard.setContent(content);
-        System.out.println("Password copied!");
-        // TODO: Show toast notification
+        copyToClipboard(currentAccount.getPassword());
+        Stage stage = (Stage) accountLabel.getScene().getWindow();
+        ToastUtil.showToast(stage, "✓ Password copied!", 117);
     }
 
     @FXML
@@ -145,15 +129,21 @@ public class AccountDetailController {
             stage.setScene(scene);
 
         } catch (Exception e) {
-            System.err.println("Failed to load account form: " + e.getMessage());
+            showAlert("Error", "Failed to load account form");
         }
+    }
+
+    @FXML
+    private void handleBack() {
+        Stage stage = (Stage) accountLabel.getScene().getWindow();
+        stage.close();
     }
 
     @FXML
     private void handleDelete() {
         try {
             // Show delete confirmation modal
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/delete-confirm.fxml"));
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/delete-confirmation.fxml"));
             Parent modal = loader.load();
 
             DeleteConfirmController controller = loader.getController();
@@ -162,8 +152,13 @@ public class AccountDetailController {
             // Create modal stage
             Stage modalStage = new Stage();
             modalStage.initModality(Modality.APPLICATION_MODAL);
+            modalStage.initOwner(accountLabel.getScene().getWindow());
             modalStage.initStyle(StageStyle.TRANSPARENT);
-            modalStage.setScene(new Scene(modal));
+
+            Scene scene = new Scene(modal);
+            scene.getStylesheets().add(Objects.requireNonNull(getClass().getResource("/css/style.css")).toExternalForm());
+
+            modalStage.setScene(scene);
             modalStage.showAndWait();
 
             // If confirmed, delete account
@@ -172,7 +167,7 @@ public class AccountDetailController {
             }
 
         } catch (Exception e) {
-            System.err.println("Failed to show delete confirmation: " + e.getMessage());
+            showAlert("Error", "Failed to show delete confirmation");
         }
     }
 
@@ -187,31 +182,19 @@ public class AccountDetailController {
             // Save updated list
             AccountService.save(credentials, accounts);
 
-            // Go back to dashboard
-            handleBack();
+            // Refresh dashboard
+            if (dashboardController != null) {
+                dashboardController.refreshAccounts();
+            }
 
-        } catch (Exception e) {
-            System.err.println("Failed to delete account: " + e.getMessage());
-        }
-    }
-
-    @FXML
-    private void handleBack() {
-        try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/dashboard.fxml"));
-            Parent dashboard = loader.load();
-
-            DashboardController controller = loader.getController();
-            controller.setCredentials(credentials);
-            controller.loadAccounts();
-
+            // Close detail window
             Stage stage = (Stage) accountLabel.getScene().getWindow();
-            Scene scene = new Scene(dashboard, 950, 800);
-            scene.getStylesheets().add(Objects.requireNonNull(getClass().getResource("/css/style.css")).toExternalForm());
-            stage.setScene(scene);
+            stage.close();
 
         } catch (Exception e) {
-            System.err.println("Failed to load dashboard: " + e.getMessage());
+            showAlert("Error", "Failed to delete account");
         }
     }
+
+
 }

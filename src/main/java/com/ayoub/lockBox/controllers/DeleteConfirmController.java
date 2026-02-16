@@ -1,4 +1,4 @@
-package com.ayoub.lockBox.ui;
+package com.ayoub.lockBox.controllers;
 
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;

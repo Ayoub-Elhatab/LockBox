@@ -1,5 +1,8 @@
 package com.ayoub.lockBox.enums;
 
+import lombok.Getter;
+
+@Getter
 public enum Category {
     ALL("All"),
     EMAIL("Email"),
@@ -12,10 +15,6 @@ public enum Category {
 
     Category(String displayName) {
         this.displayName = displayName;
-    }
-
-    public String getDisplayName() {
-        return displayName;
     }
 
     public static Category fromString(String text) {

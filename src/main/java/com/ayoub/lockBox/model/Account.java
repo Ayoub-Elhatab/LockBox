@@ -9,8 +9,9 @@ import java.util.UUID;
 @Getter
 @Setter
 @ToString(exclude = {"password", "username", "notes"})
-@EqualsAndHashCode
+@EqualsAndHashCode(onlyExplicitlyIncluded = true)
 public class Account {
+    @EqualsAndHashCode.Include
     private String id;
     private String label;
     private String category;

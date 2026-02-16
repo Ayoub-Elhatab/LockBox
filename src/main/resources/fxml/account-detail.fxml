@@ -5,10 +5,9 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.image.Image?>
-
 <VBox xmlns="http://javafx.com/javafx"
       xmlns:fx="http://javafx.com/fxml"
-      fx:controller="com.ayoub.lockBox.ui.AccountDetailController"
+      fx:controller="com.ayoub.lockBox.controllers.AccountDetailController"
       styleClass="detail-container"
       spacing="24"
       prefWidth="600"
@@ -66,7 +65,7 @@
         <HBox styleClass="detail-field" alignment="CENTER_LEFT" spacing="12">
             <Label fx:id="passwordLabel" text="••••••••••••" styleClass="detail-value"/>
             <Region HBox.hgrow="ALWAYS"/>
-            <Button fx:id="togglePasswordBtn" styleClass="btn-toggle-detail" onAction="#togglePassword">
+            <Button fx:id="togglePasswordBtn" styleClass="btn-toggle-detail" onAction="#togglePasswordVisibility">
                 <graphic>
                     <ImageView fitWidth="18" fitHeight="18" preserveRatio="true">
                         <Image url="@/icons/eye.png"/>
@@ -120,5 +119,4 @@
             </graphic>
         </Button>
     </HBox>
-
 </VBox>

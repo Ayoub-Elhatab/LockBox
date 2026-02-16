@@ -8,7 +8,7 @@
 
 <BorderPane xmlns="http://javafx.com/javafx"
             xmlns:fx="http://javafx.com/fxml"
-            fx:controller="com.ayoub.lockBox.ui.DashboardController"
+            fx:controller="com.ayoub.lockBox.controllers.DashboardController"
             styleClass="dashboard-container">
 
     <!-- MAIN CONTENT -->
