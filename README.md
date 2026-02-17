@@ -118,3 +118,16 @@ This creates a `LockBox/` folder with a standalone `LockBox.exe` that works with
 4. Writes encrypted data atomically to `lockBox.enc`
 
 ---
+
+---
+
+## Screenshots
+
+| Login | Dashboard | Add Account |
+|-------|-----------|-------------|
+| ![Login](screenshots/1-login.png) | ![Dashboard](screenshots/2-dashbord.png) | ![Add Account](screenshots/3-add-account.png) |
+
+| Menu | Account Details | Edit Account | Delete Account |
+|------|-----------------|--------------|----------------|
+| ![Menu](screenshots/4-menu.png) | ![Account Details](screenshots/5-account-details.png) | ![Edit Account](screenshots/6-edit-account.png) | ![Delete Account](screenshots/7-delete-account.png) |
+```
