@@ -67,13 +67,4 @@ public class SecureCredentials implements AutoCloseable {
     public void close() {
         wipe();
     }
-
-    @Override
-    protected void finalize() throws Throwable {
-        try {
-            wipe();
-        } finally {
-            super.finalize();
-        }
-    }
 }

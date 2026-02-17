@@ -4,22 +4,20 @@ import com.ayoub.lockBox.model.Account;
 import com.ayoub.lockBox.enums.Category;
 import com.ayoub.lockBox.security.SecureCredentials;
 import com.ayoub.lockBox.service.AccountService;
+import com.ayoub.lockBox.utils.AlertUtil;
+import com.ayoub.lockBox.utils.IconUtil;
+import com.ayoub.lockBox.utils.ModalUtil;
 import com.ayoub.lockBox.utils.ToastUtil;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
-import javafx.scene.Parent;
-import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseButton;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
-import javafx.stage.Modality;
 import javafx.stage.Stage;
-import javafx.stage.StageStyle;
 import lombok.Setter;
 import java.util.ArrayList;
 import java.util.List;
@@ -68,7 +66,7 @@ public class DashboardController {
             allAccounts = AccountService.load(credentials);
             displayAccounts(allAccounts);
         } catch (Exception e) {
-            System.err.println("Failed to load accounts: " + e.getMessage());
+            AlertUtil.showAlert("Error", "Failed to load accounts");
         }
     }
 
@@ -121,19 +119,7 @@ public class DashboardController {
         icon.setFitHeight(36);
         icon.setPreserveRatio(true);
 
-        String iconPath = switch (account.getCategory().toLowerCase()) {
-            case "email" -> "/icons/gmail.png";
-            case "facebook" -> "/icons/facebook.png";
-            case "instagram" -> "/icons/instagram.png";
-            case "linkedin" -> "/icons/linkedin.png";
-            default -> "/icons/other.png";
-        };
-
-        try {
-            icon.setImage(new Image(Objects.requireNonNull(getClass().getResourceAsStream(iconPath))));
-        } catch (Exception e) {
-            System.err.println("Icon not found: " + iconPath);
-        }
+        IconUtil.setIcon(icon, IconUtil.getCategoryIconPath(account.getCategory()));
 
         // Account info
         VBox info = new VBox(4);
@@ -205,7 +191,7 @@ public class DashboardController {
         return contextMenu;
     }
 
-        private Button createIconButton(String iconPath, String styleClass) {
+    private Button createIconButton(String iconPath, String styleClass) {
         Button btn = new Button();
         btn.getStyleClass().add(styleClass);
 
@@ -220,119 +206,6 @@ public class DashboardController {
         }
 
         return btn;
-    }
-
-    private void viewAccountDetail(Account account) {
-        try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/account-detail.fxml"));
-            Parent detail = loader.load();
-
-            AccountDetailController controller = loader.getController();
-            controller.setCredentials(credentials);
-            controller.setDashboardController(this);
-            controller.setAccount(account);
-
-            // Create modal stage
-            Stage modalStage = new Stage();
-            modalStage.initModality(Modality.APPLICATION_MODAL);
-            modalStage.initOwner(accountListContainer.getScene().getWindow());
-
-            Scene scene = new Scene(detail, 600, 850);
-            scene.getStylesheets().add(Objects.requireNonNull(getClass().getResource("/css/style.css")).toExternalForm());
-
-            modalStage.getIcons().add(new Image(Objects.requireNonNull(getClass().getResourceAsStream("/icons/security.png"))));
-            modalStage.setScene(scene);
-            modalStage.setTitle("Account Details");
-            modalStage.setResizable(false);
-            modalStage.showAndWait();
-
-        } catch (Exception e) {
-            System.err.println("Failed to load account detail: " + e.getMessage());
-        }
-    }
-
-    private void copyPassword(Account account) {
-        copyToClipboard(account.getPassword());
-        Stage stage = (Stage) accountListContainer.getScene().getWindow();
-        ToastUtil.showToast(stage, "✓ Password copied!", 85);
-    }
-
-    private void editAccount(Account account) {
-        try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/account-form.fxml"));
-            Parent form = loader.load();
-
-            AccountFormController controller = loader.getController();
-            controller.setCredentials(credentials);
-            controller.setDashboardController(this);
-            controller.setEditMode(account);
-
-            // Create modal stage
-            Stage modalStage = new Stage();
-            modalStage.initModality(Modality.APPLICATION_MODAL);
-            modalStage.initOwner(accountListContainer.getScene().getWindow());
-
-            Scene scene = new Scene(form, 600, 850);
-            scene.getStylesheets().add(Objects.requireNonNull(getClass().getResource("/css/style.css")).toExternalForm());
-
-            modalStage.getIcons().add(new Image(Objects.requireNonNull(getClass().getResourceAsStream("/icons/security.png"))));
-            modalStage.setScene(scene);
-            modalStage.setTitle("Edit Account");
-            modalStage.setResizable(false);
-            modalStage.showAndWait();
-
-        } catch (Exception e) {
-            System.err.println("Failed to load account form: " + e.getMessage());
-        }
-    }
-
-    private void deleteAccount(Account account) {
-        try {
-            // Show delete confirmation modal
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/delete-confirmation.fxml"));
-            Parent modal = loader.load();
-
-            DeleteConfirmController controller = loader.getController();
-            controller.setAccountName(account.getLabel());
-
-            // Create modal stage
-            Stage modalStage = new Stage();
-            modalStage.initModality(Modality.APPLICATION_MODAL);
-            modalStage.initStyle(StageStyle.TRANSPARENT);
-
-            Scene scene = new Scene(modal);
-            scene.getStylesheets().add(Objects.requireNonNull(getClass().getResource("/css/style.css")).toExternalForm());
-
-            modalStage.setScene(scene);
-            modalStage.showAndWait();
-
-            // If confirmed, delete account
-            if (controller.isConfirmed()) {
-                performDelete(account);
-            }
-
-        } catch (Exception e) {
-            System.err.println("Failed to show delete confirmation: " + e.getMessage());
-        }
-    }
-
-    private void performDelete(Account account) {
-        try {
-            // Load all accounts
-            List<Account> accounts = AccountService.load(credentials);
-
-            // Remove account
-            accounts.removeIf(acc -> acc.getId().equals(account.getId()));
-
-            // Save updated list
-            AccountService.save(credentials, accounts);
-
-            // Refresh display
-            refreshAccounts();
-
-        } catch (Exception e) {
-            System.err.println("Failed to delete account: " + e.getMessage());
-        }
     }
 
     @FXML
@@ -423,33 +296,73 @@ public class DashboardController {
         displayAccounts(filtered);
     }
 
+    private void viewAccountDetail(Account account) {
+        ModalUtil.showModal(
+                "/fxml/account-detail.fxml",
+                "Account Details",
+                accountListContainer.getScene().getWindow(),
+                600, 850,
+                (AccountDetailController controller) -> {
+                    controller.setCredentials(credentials);
+                    controller.setDashboardController(this);
+                    controller.setAccount(account);
+                }
+        );
+    }
+
+    private void copyPassword(Account account) {
+        copyToClipboard(account.getPassword());
+        Stage stage = (Stage) accountListContainer.getScene().getWindow();
+        ToastUtil.showToast(stage, "✓ Password copied!", 85);
+    }
+
+    private void editAccount(Account account) {
+        ModalUtil.showModal(
+                "/fxml/account-form.fxml",
+                "Edit Account",
+                accountListContainer.getScene().getWindow(),
+                600, 850,
+                (AccountFormController controller) -> {
+                    controller.setCredentials(credentials);
+                    controller.setDashboardController(this);
+                    controller.setEditMode(account);
+                }
+        );
+    }
+
+    private void deleteAccount(Account account) {
+        ModalUtil.<DeleteConfirmController>showTransparentModal(
+                "/fxml/delete-confirmation.fxml",
+                accountListContainer.getScene().getWindow(),
+                controller -> {
+                    controller.setAccountName(account.getLabel());
+                    if (controller.isConfirmed()) {
+                        try {
+                            List<Account> accounts = AccountService.load(credentials);
+                            accounts.removeIf(acc -> acc.getId().equals(account.getId()));
+                            AccountService.save(credentials, accounts);
+                            refreshAccounts();
+                        } catch (Exception e) {
+                            AlertUtil.showAlert("Error", "Failed to delete account");
+                        }
+                    }
+                }
+        );
+    }
+
     @FXML
     private void handleAddAccount() {
-        try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/account-form.fxml"));
-            Parent form = loader.load();
+        ModalUtil.showModal(
+                "/fxml/account-form.fxml",
+                "Add Account",
+                addButton.getScene().getWindow(),
+                600, 850,
+                (AccountFormController controller) -> {
+                    controller.setCredentials(credentials);
+                    controller.setDashboardController(this);
+                }
+        );
 
-            AccountFormController controller = loader.getController();
-            controller.setCredentials(credentials);
-            controller.setDashboardController(this);
-
-            // Create modal stage
-            Stage modalStage = new Stage();
-            modalStage.initModality(Modality.APPLICATION_MODAL);
-            modalStage.initOwner(addButton.getScene().getWindow());
-
-            Scene scene = new Scene(form, 600, 850);
-            scene.getStylesheets().add(Objects.requireNonNull(getClass().getResource("/css/style.css")).toExternalForm());
-
-            modalStage.getIcons().add(new Image(Objects.requireNonNull(getClass().getResourceAsStream("/icons/security.png"))));
-            modalStage.setScene(scene);
-            modalStage.setTitle("Add Account");
-            modalStage.setResizable(false);
-            modalStage.showAndWait();
-
-        } catch (Exception e) {
-            System.err.println("Failed to load account form: " + e.getMessage());
-        }
     }
 
     public void refreshAccounts() {

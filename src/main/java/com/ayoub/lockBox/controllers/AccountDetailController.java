@@ -3,7 +3,9 @@ package com.ayoub.lockBox.controllers;
 import com.ayoub.lockBox.model.Account;
 import com.ayoub.lockBox.security.SecureCredentials;
 import com.ayoub.lockBox.service.AccountService;
+import com.ayoub.lockBox.utils.AlertUtil;
 import com.ayoub.lockBox.utils.IconUtil;
+import com.ayoub.lockBox.utils.ModalUtil;
 import com.ayoub.lockBox.utils.ToastUtil;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -11,17 +13,12 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
-import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import javafx.stage.Modality;
 import javafx.stage.Stage;
-import javafx.stage.StageStyle;
 import lombok.Setter;
 import java.util.List;
 import java.util.Objects;
-import static com.ayoub.lockBox.utils.AlertUtil.showAlert;
 import static com.ayoub.lockBox.utils.ClipboardUtil.copyToClipboard;
-import static com.ayoub.lockBox.utils.ToastUtil.showToast;
 
 public class AccountDetailController {
 
@@ -68,19 +65,7 @@ public class AccountDetailController {
         notesLabel.setText(currentAccount.getNotes() != null && !currentAccount.getNotes().isEmpty() ? currentAccount.getNotes() : "No notes added.");
 
         // Set category icon
-        String iconPath = switch (currentAccount.getCategory().toLowerCase()) {
-            case "email" -> "/icons/gmail.png";
-            case "facebook" -> "/icons/facebook.png";
-            case "instagram" -> "/icons/instagram.png";
-            case "linkedin" -> "/icons/linkedin.png";
-            default -> "/icons/other.png";
-        };
-
-        try {
-            categoryIcon.setImage(new Image(Objects.requireNonNull(getClass().getResourceAsStream(iconPath))));
-        } catch (Exception e) {
-            System.err.println("Icon not found: " + iconPath);
-        }
+        IconUtil.setIcon(categoryIcon, IconUtil.getCategoryIconPath(currentAccount.getCategory()));
     }
 
     @FXML
@@ -129,71 +114,36 @@ public class AccountDetailController {
             stage.setScene(scene);
 
         } catch (Exception e) {
-            showAlert("Error", "Failed to load account form");
+            System.err.println("Failed to load account form: " + e.getMessage());
         }
+    }
+
+    @FXML
+    private void handleDelete() {
+        ModalUtil.<DeleteConfirmController>showTransparentModal(
+                "/fxml/delete-confirmation.fxml",
+                accountLabel.getScene().getWindow(),
+                controller -> {
+                    controller.setAccountName(currentAccount.getLabel());
+                    if (controller.isConfirmed()) {
+                        try {
+                            List<Account> accounts = AccountService.load(credentials);
+                            accounts.removeIf(acc -> acc.getId().equals(currentAccount.getId()));
+                            AccountService.save(credentials, accounts);
+                            if (dashboardController != null) dashboardController.refreshAccounts();
+                            ((Stage) accountLabel.getScene().getWindow()).close();
+                        } catch (Exception e) {
+                            AlertUtil.showAlert("Error", "Failed to delete account");
+                        }
+                    }
+                }
+        );
     }
 
     @FXML
     private void handleBack() {
         Stage stage = (Stage) accountLabel.getScene().getWindow();
         stage.close();
-    }
-
-    @FXML
-    private void handleDelete() {
-        try {
-            // Show delete confirmation modal
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/delete-confirmation.fxml"));
-            Parent modal = loader.load();
-
-            DeleteConfirmController controller = loader.getController();
-            controller.setAccountName(currentAccount.getLabel());
-
-            // Create modal stage
-            Stage modalStage = new Stage();
-            modalStage.initModality(Modality.APPLICATION_MODAL);
-            modalStage.initOwner(accountLabel.getScene().getWindow());
-            modalStage.initStyle(StageStyle.TRANSPARENT);
-
-            Scene scene = new Scene(modal);
-            scene.getStylesheets().add(Objects.requireNonNull(getClass().getResource("/css/style.css")).toExternalForm());
-
-            modalStage.setScene(scene);
-            modalStage.showAndWait();
-
-            // If confirmed, delete account
-            if (controller.isConfirmed()) {
-                deleteAccount();
-            }
-
-        } catch (Exception e) {
-            showAlert("Error", "Failed to show delete confirmation");
-        }
-    }
-
-    private void deleteAccount() {
-        try {
-            // Load all accounts
-            List<Account> accounts = AccountService.load(credentials);
-
-            // Remove current account
-            accounts.removeIf(acc -> acc.getId().equals(currentAccount.getId()));
-
-            // Save updated list
-            AccountService.save(credentials, accounts);
-
-            // Refresh dashboard
-            if (dashboardController != null) {
-                dashboardController.refreshAccounts();
-            }
-
-            // Close detail window
-            Stage stage = (Stage) accountLabel.getScene().getWindow();
-            stage.close();
-
-        } catch (Exception e) {
-            showAlert("Error", "Failed to delete account");
-        }
     }
 
 

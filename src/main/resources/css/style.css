@@ -544,17 +544,14 @@
 /* ===================== DELETE CONFIRMATION MODAL ===================== */
 
 .modal-overlay {
-    -fx-background-color: rgba(0, 0, 0, 0.6);
+
 }
 
 .modal-dialog {
-    -fx-background-color: white;
+    -fx-background-color: -primary-bg;
     -fx-border-color: transparent;
     -fx-padding: 30px;
-    -fx-border-radius: 16px;
-    -fx-background-radius: 16px;
-    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.25), 30, 0.15, 0, 8);
-
+    -fx-effect: dropshadow(gaussian, rgba(231,76,60,0.3), 10, 0.2, 0, 4);
 }
 
 .warning-circle {

@@ -17,12 +17,4 @@ public enum Category {
         this.displayName = displayName;
     }
 
-    public static Category fromString(String text) {
-        for (Category category : Category.values()) {
-            if (category.displayName.equalsIgnoreCase(text)) {
-                return category;
-            }
-        }
-        return OTHER;
-    }
 }
