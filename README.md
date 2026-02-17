@@ -87,7 +87,7 @@ mvn clean package
 
 ### Step 2 - Create standalone EXE
 ```bash
-jpackage --input target --name LockBox --main-jar LockBox-1.0-SNAPSHOT.jar --main-class com.ayoub.lockBox.Main --type app-image --module-path "C:\Me\programs\javafx-jmods-17.0.18" --add-modules javafx.controls,javafx.fxml,javafx.graphics
+jpackage --input target --name LockBox --main-jar LockBox-1.0-SNAPSHOT.jar --main-class com.ayoub.lockBox.Main --icon src\main\resources\icons\lock.ico --type app-image --module-path "C:\Me\programs\javafx-jmods-17.0.18" --add-modules javafx.controls,javafx.fxml,javafx.graphics
 ```
 
 This creates a `LockBox/` folder with a standalone `LockBox.exe` that works without Java installed.
