@@ -47,19 +47,12 @@ import static com.ayoub.lockBox.utils.ClipboardUtil.copyToClipboard;
 public class AccountDetailController {
 
     @FXML private ImageView categoryIcon;
-
     @FXML private Label accountLabel;
-
     @FXML private Label categoryBadge;
-
     @FXML private Label usernameLabel;
-
     @FXML private Label passwordLabel;
-
     @FXML private Label notesLabel;
-
-    @FXML
-    private Button togglePasswordBtn;
+    @FXML private Button togglePasswordBtn;
 
     @Setter
     private SecureCredentials credentials;
