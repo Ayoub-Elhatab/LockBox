@@ -32,7 +32,7 @@ import static com.ayoub.lockBox.utils.AlertUtil.showAlert;
  * @see DashboardController
  * @see AccountService
  *
- * @author Ayoub Elhatab
+ * @author Ayoub Elhatab.
  * LinkedIn: <a href="https://www.linkedin.com/in/ayoub-elhatab/">Ayoub Elhatab</a>
  */
 public class AccountFormController {
@@ -84,7 +84,7 @@ public class AccountFormController {
     @FXML
     private void initialize() {
         categoryComboBox.getItems().addAll("Email", "Facebook", "Instagram", "LinkedIn", "Other");
-        categoryComboBox.setValue("Email"); // Default
+        categoryComboBox.setValue("Email");
     }
 
     /**

@@ -41,7 +41,7 @@ import static com.ayoub.lockBox.utils.ClipboardUtil.copyToClipboard;
  * @see AccountFormController
  * @see DeleteConfirmController
  *
- * @author Ayoub Elhatab
+ * @author Ayoub Elhatab.
  * LinkedIn: <a href="https://www.linkedin.com/in/ayoub-elhatab/">Ayoub Elhatab</a>
  */
 public class AccountDetailController {
