@@ -11,14 +11,14 @@
             fx:controller="com.ayoub.lockBox.controllers.DashboardController"
             styleClass="dashboard-container">
 
-    <!-- MAIN CONTENT -->
+    <!-- main content -->
     <center>
         <VBox spacing="16" styleClass="dashboard-main">
             <padding>
                 <Insets top="20" right="20" bottom="20" left="20"/>
             </padding>
 
-            <!-- SEARCH BAR -->
+            <!-- search bar -->
             <HBox styleClass="search-input" alignment="CENTER_LEFT" spacing="8">
                 <ImageView fitWidth="18" fitHeight="18" preserveRatio="true">
                     <Image url="@/icons/search.png"/>
@@ -29,7 +29,7 @@
                            HBox.hgrow="ALWAYS"/>
             </HBox>
 
-            <!-- FILTER BUTTONS -->
+            <!-- filter buttons -->
             <HBox spacing="8" alignment="CENTER_LEFT">
                 <Button fx:id="filterAll" text="All" styleClass="filter-btn-active" onAction="#filterAll"/>
 
@@ -80,12 +80,12 @@
                 <Button fx:id="filterOther" text="Other" styleClass="filter-btn" onAction="#filterOther"/>
             </HBox>
 
-            <!-- ACCOUNT LIST (Scrollable) -->
+            <!-- account list (Scrollable) -->
             <ScrollPane fitToWidth="true" styleClass="account-scroll" VBox.vgrow="ALWAYS">
                 <VBox fx:id="accountListContainer" spacing="12" styleClass="account-list"/>
             </ScrollPane>
 
-            <!-- ADD BUTTON -->
+            <!-- add button -->
             <StackPane>
                 <Button fx:id="addButton"
                         styleClass="fab-button"
@@ -101,7 +101,6 @@
                     </StackPane.margin>
                 </Button>
             </StackPane>
-
         </VBox>
     </center>
 </BorderPane>
