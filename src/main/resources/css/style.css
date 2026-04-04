@@ -1,5 +1,5 @@
 .root {
-    /* ===================== COLOR VARIABLES ===================== */
+    /* color variables */
     -primary-bg: #F4F8FB;
     -white: #FFFFFF;
     -dark-text: #242424;
@@ -26,13 +26,13 @@
     -danger-hover: #F5B7B1;
     -dashboard-bg: #F9FCFF;
 
-    /* ===================== GLOBAL ===================== */
+    /* global */
     -fx-font-family: "Patrick Hand";
     -fx-font-size: 14px;
     -fx-background-color: #EBF5FB;
 }
 
-/* ===================== LOGIN ===================== */
+/* login */
 .login-container {
     -fx-background-color: -primary-bg;
     -fx-padding: 40px;
@@ -132,7 +132,7 @@
     -fx-text-fill: #1A1F22;
 }
 
-/* ===================== DASHBOARD ===================== */
+/* dashboard */
 .dashboard-container {
     -fx-background-color: -primary-bg;
 }
@@ -297,7 +297,7 @@
 }
 
 
-/* ===================== ACCOUNT FORM ===================== */
+/* account form */
 
 .form-container {
     -fx-background-color: -primary-bg;
@@ -419,8 +419,7 @@
     -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.1), 8, 0.1, 0, 2);
 }
 
-
-/* ===================== ACCOUNT DETAIL ===================== */
+/* account detail */
 
 .detail-container {
     -fx-background-color: -primary-bg;
@@ -540,12 +539,7 @@
     -fx-font-weight: 600;
 }
 
-
-/* ===================== DELETE CONFIRMATION MODAL ===================== */
-
-.modal-overlay {
-
-}
+/* delete confirmation modal */
 
 .modal-dialog {
     -fx-background-color: -primary-bg;
@@ -606,7 +600,7 @@
     -fx-font-weight: bold;
 }
 
-/* ===================== CONTEXT MENU ===================== */
+/* context menu */
 
 .context-menu {
     -fx-background-color: #FFFFFF;
@@ -648,7 +642,7 @@
     -fx-border-width: 1px 0 0 0;
 }
 
-/* ===================== ALERT DIALOG ===================== */
+/* alert dialog */
 
 .dialog-pane {
     -fx-background-color: #F4F8FB;
@@ -682,7 +676,7 @@
 }
 
 
-/* ===================== COMBOBOX DROPDOWN ===================== */
+/* combobox dropdown */
 
 .combo-box {
     -fx-background-color: #FFFFFF;

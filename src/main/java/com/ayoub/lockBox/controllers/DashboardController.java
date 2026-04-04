@@ -25,29 +25,43 @@ import java.util.Objects;
 import java.util.stream.Collectors;
 import static com.ayoub.lockBox.utils.ClipboardUtil.copyToClipboard;
 
+/**
+ * Main dashboard controller for the LockBox password manager.
+ * <p>
+ * Manages the primary view displaying all saved accounts with search, filtering,
+ * and CRUD operations. Provides an interactive account list with category-based
+ * filtering, real-time search, and quick actions (copy, edit, delete).
+ * <p>
+ * This controller manages:
+ * <ul>
+ *   <li>Loading and displaying encrypted accounts from storage</li>
+ *   <li>Real-time search across account labels, usernames, and notes</li>
+ *   <li>Category filtering (All, Email, Facebook, Instagram, LinkedIn, Other)</li>
+ *   <li>Account cards with action buttons and right-click context menu</li>
+ *   <li>Empty state display when no accounts exist</li>
+ *   <li>Navigation to add/edit/detail/delete modals</li>
+ *   <li>Password copy to clipboard with toast notifications</li>
+ * </ul>
+ *
+ * @see Account
+ * @see AccountDetailController
+ * @see AccountFormController
+ * @see DeleteConfirmController
+ *
+ * @author Ayoub Elhatab.
+ * LinkedIn: <a href="https://www.linkedin.com/in/ayoub-elhatab/">Ayoub Elhatab</a>
+ */
 public class DashboardController {
 
-    @FXML
-    private TextField searchField;
-
-    @FXML
-    private Button filterAll;
-    @FXML
-    private Button filterEmail;
-    @FXML
-    private Button filterFacebook;
-    @FXML
-    private Button filterInstagram;
-    @FXML
-    private Button filterLinkedin;
-    @FXML
-    private Button filterOther;
-
-    @FXML
-    private VBox accountListContainer;
-
-    @FXML
-    private Button addButton;
+    @FXML private TextField searchField;
+    @FXML private Button filterAll;
+    @FXML private Button filterEmail;
+    @FXML private Button filterFacebook;
+    @FXML private Button filterInstagram;
+    @FXML private Button filterLinkedin;
+    @FXML private Button filterOther;
+    @FXML private VBox accountListContainer;
+    @FXML private Button addButton;
 
     @Setter
     private SecureCredentials credentials;
@@ -55,12 +69,24 @@ public class DashboardController {
     private List<Account> allAccounts = new ArrayList<>();
     private Category currentFilter = Category.ALL;
 
+    /**
+     * Initializes the dashboard by setting up the search field listener.
+     * <p>
+     * Attaches a real-time text change listener to the search field that
+     * automatically filters accounts as the user types. Called automatically
+     * by JavaFX after FXML loading.
+     */
     @FXML
     private void initialize() {
-        // Add search listener
         searchField.textProperty().addListener((obs, oldVal, newVal) -> filterAccounts());
     }
 
+    /**
+     * Loads all accounts from encrypted storage and displays them.
+     * <p>
+     * Decrypts the lockBox.enc file using the provided credentials and
+     * populates the account list. Displays an error alert if loading fails.
+     */
     public void loadAccounts() {
         try {
             allAccounts = AccountService.load(credentials);
@@ -70,6 +96,15 @@ public class DashboardController {
         }
     }
 
+    /**
+     * Displays the provided list of accounts in the UI.
+     * <p>
+     * Clears the current account list and creates account cards for each
+     * provided account. Shows an empty state with icon and message if the
+     * list is empty.
+     *
+     * @param accounts the list of accounts to display
+     */
     private void displayAccounts(List<Account> accounts) {
         accountListContainer.getChildren().clear();
 
@@ -78,7 +113,6 @@ public class DashboardController {
             emptyState.setAlignment(Pos.CENTER);
             emptyState.setPadding(new Insets(190, 60, 60, 20));
 
-            // Icon
             try {
                 ImageView emptyIcon = new ImageView(new Image(Objects.requireNonNull(getClass().getResourceAsStream("/icons/empty.png"))));
                 emptyIcon.setFitWidth(80);
@@ -107,6 +141,16 @@ public class DashboardController {
         }
     }
 
+    /**
+     * Creates an interactive account card UI component.
+     * <p>
+     * Builds an HBox containing category icon, account info (label and username),
+     * and action buttons (copy, edit, delete). Supports both left-click to view
+     * details and right-click to show context menu.
+     *
+     * @param account the account to create a card for
+     * @return HBox representing the account card
+     */
     private HBox createAccountCard(Account account) {
         HBox card = new HBox(16);
         card.setAlignment(Pos.CENTER_LEFT);
@@ -172,6 +216,14 @@ public class DashboardController {
         return card;
     }
 
+    /**
+     * Creates a right-click context menu for an account card.
+     * <p>
+     * Provides menu items for View Details, Copy Password, Edit, and Delete actions.
+     *
+     * @param account the account to create a context menu for
+     * @return ContextMenu with account actions
+     */
     private ContextMenu createContextMenu(Account account) {
         ContextMenu contextMenu = new ContextMenu();
 
@@ -191,6 +243,15 @@ public class DashboardController {
         return contextMenu;
     }
 
+    /**
+     * Creates an icon button with the specified icon and style class.
+     * <p>
+     * Helper method for creating consistent action buttons (copy, edit, delete).
+     *
+     * @param iconPath the resource path to the button icon
+     * @param styleClass the CSS style class to apply
+     * @return Button with icon graphic
+     */
     private Button createIconButton(String iconPath, String styleClass) {
         Button btn = new Button();
         btn.getStyleClass().add(styleClass);
@@ -208,44 +269,81 @@ public class DashboardController {
         return btn;
     }
 
+    /**
+     * Filters accounts to show all categories.
+     * FXML event handler for the "All" filter button.
+     */
     @FXML
     private void filterAll() {
         applyFilter(Category.ALL);
     }
 
+    /**
+     * Filters accounts to show only Email category.
+     * FXML event handler for the "Email" filter button.
+     */
     @FXML
     private void filterEmail() {
         applyFilter(Category.EMAIL);
     }
 
+    /**
+     * Filters accounts to show only Facebook category.
+     * FXML event handler for the "Facebook" filter button.
+     */
     @FXML
     private void filterFacebook() {
         applyFilter(Category.FACEBOOK);
     }
 
+    /**
+     * Filters accounts to show only Instagram category.
+     * FXML event handler for the "Instagram" filter button.
+     */
     @FXML
     private void filterInstagram() {
         applyFilter(Category.INSTAGRAM);
     }
 
+    /**
+     * Filters accounts to show only LinkedIn category.
+     * FXML event handler for the "LinkedIn" filter button.
+     */
     @FXML
     private void filterLinkedin() {
         applyFilter(Category.LINKEDIN);
     }
 
+    /**
+     * Filters accounts to show only Other category.
+     * FXML event handler for the "Other" filter button.
+     */
     @FXML
     private void filterOther() {
         applyFilter(Category.OTHER);
     }
 
+    /**
+     * Applies the selected category filter and updates the UI.
+     * <p>
+     * Updates the current filter state, refreshes filter button styles,
+     * and re-filters the account list.
+     *
+     * @param category the category filter to apply
+     */
     private void applyFilter(Category category) {
         currentFilter = category;
         updateFilterButtons();
         filterAccounts();
     }
 
+    /**
+     * Updates filter button styles to reflect the current active filter.
+     * <p>
+     * Removes the active style class from all buttons and applies it only
+     * to the currently selected filter button.
+     */
     private void updateFilterButtons() {
-        // Remove active class from all
         filterAll.getStyleClass().removeAll("filter-btn-active");
         filterEmail.getStyleClass().removeAll("filter-btn-active");
         filterFacebook.getStyleClass().removeAll("filter-btn-active");
@@ -260,7 +358,6 @@ public class DashboardController {
         filterLinkedin.getStyleClass().add("filter-btn");
         filterOther.getStyleClass().add("filter-btn");
 
-        // Add active class to selected
         Button activeButton = switch (currentFilter) {
             case EMAIL -> filterEmail;
             case FACEBOOK -> filterFacebook;
@@ -274,16 +371,20 @@ public class DashboardController {
         activeButton.getStyleClass().add("filter-btn-active");
     }
 
+    /**
+     * Filters and displays accounts based on current category and search text.
+     * <p>
+     * Combines category filtering with real-time search across account labels,
+     * usernames, and notes. Updates the displayed account list immediately.
+     */
     private void filterAccounts() {
         String searchText = searchField.getText().toLowerCase();
 
         List<Account> filtered = allAccounts.stream()
                 .filter(account -> {
-                    // Filter by category
                     if (currentFilter != Category.ALL && !account.getCategory().equalsIgnoreCase(currentFilter.getDisplayName())) {
                         return false;
                     }
-                    // Filter by search text
                     if (!searchText.isEmpty()) {
                         return account.getLabel().toLowerCase().contains(searchText) ||
                                 account.getUsername().toLowerCase().contains(searchText) ||
@@ -296,6 +397,14 @@ public class DashboardController {
         displayAccounts(filtered);
     }
 
+    /**
+     * Opens the account detail modal for the specified account.
+     * <p>
+     * Displays a modal window showing full account information with options
+     * to copy credentials, edit, or delete the account.
+     *
+     * @param account the account to view details for
+     */
     private void viewAccountDetail(Account account) {
         ModalUtil.showModal(
                 "/fxml/account-detail.fxml",
@@ -310,12 +419,28 @@ public class DashboardController {
         );
     }
 
+    /**
+     * Copies the account's password to the system clipboard.
+     * <p>
+     * Displays a success toast notification at the bottom of the window
+     * after copying the password.
+     *
+     * @param account the account whose password to copy
+     */
     private void copyPassword(Account account) {
         copyToClipboard(account.getPassword());
         Stage stage = (Stage) accountListContainer.getScene().getWindow();
         ToastUtil.showToast(stage, "✓ Password copied!", 85);
     }
 
+    /**
+     * Opens the account edit modal for the specified account.
+     * <p>
+     * Displays the account form modal pre-filled with the account's current
+     * data in edit mode. Updates are saved to encrypted storage.
+     *
+     * @param account the account to edit
+     */
     private void editAccount(Account account) {
         ModalUtil.showModal(
                 "/fxml/account-form.fxml",
@@ -330,6 +455,19 @@ public class DashboardController {
         );
     }
 
+    /**
+     * Shows delete confirmation and removes the account if confirmed.
+     * <p>
+     * Workflow:
+     * <ol>
+     *   <li>Display transparent delete confirmation modal</li>
+     *   <li>If confirmed, remove account from encrypted storage</li>
+     *   <li>Refresh the account list to reflect changes</li>
+     * </ol>
+     * Displays an error alert if deletion fails.
+     *
+     * @param account the account to delete
+     */
     private void deleteAccount(Account account) {
         ModalUtil.<DeleteConfirmController>showTransparentModal(
                 "/fxml/delete-confirmation.fxml",
@@ -350,6 +488,13 @@ public class DashboardController {
         );
     }
 
+    /**
+     * Opens the add account modal.
+     * <p>
+     * Displays the account form modal in add mode (empty fields).
+     * New accounts are saved to encrypted storage upon submission.
+     * FXML event handler for the FAB (Floating Action Button).
+     */
     @FXML
     private void handleAddAccount() {
         ModalUtil.showModal(
@@ -362,9 +507,14 @@ public class DashboardController {
                     controller.setDashboardController(this);
                 }
         );
-
     }
 
+    /**
+     * Reloads all accounts from encrypted storage and refreshes the display.
+     * <p>
+     * Called after add/edit/delete operations to ensure the UI reflects
+     * the latest data from storage.
+     */
     public void refreshAccounts() {
         loadAccounts();
     }

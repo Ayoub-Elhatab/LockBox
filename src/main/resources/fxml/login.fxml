@@ -48,7 +48,6 @@
         </VBox.margin>
     </VBox>
 
-
     <!-- Unlock Button -->
     <HBox alignment="CENTER">
         <Button fx:id="unlockButton" styleClass="btn-primary" onAction="#handleUnlock" defaultButton="true" maxWidth="300" minWidth="300" minHeight="42">
