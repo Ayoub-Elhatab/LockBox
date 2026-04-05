@@ -81,13 +81,16 @@ public class ModalUtil {
      * applies CSS, and invokes the controller setup callback.
      * <p>
      * The modal has no title bar or window decorations (StageStyle.TRANSPARENT).
+     * Blocks until the modal is closed, then returns the controller instance
+     *  for post-close inspection (e.g., checking confirmation flags).
      *
      * @param <T> the controller type
      * @param fxmlPath the resource path to the FXML file
      * @param owner the parent window
      * @param controllerSetup callback to configure the controller (e.g., set confirmation message)
+     * @return the controller instance after the modal closes, or null if loading failed
      */
-    public static <T> void showTransparentModal(String fxmlPath, Window owner, Consumer<T> controllerSetup) {
+    public static <T> T showTransparentModal(String fxmlPath, Window owner, Consumer<T> controllerSetup) {
         try {
             FXMLLoader loader = new FXMLLoader(ModalUtil.class.getResource(fxmlPath));
             Parent root = loader.load();
@@ -106,8 +109,11 @@ public class ModalUtil {
             modalStage.setScene(scene);
             modalStage.showAndWait();
 
+            return controller;
+
         } catch (Exception e) {
             System.err.println("Failed to show modal: " + e.getMessage());
+            return null;
         }
     }
 }

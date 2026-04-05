@@ -167,24 +167,23 @@ public class AccountDetailController {
      */
     @FXML
     private void handleDelete() {
-        ModalUtil.<DeleteConfirmController>showTransparentModal(
+        DeleteConfirmController controller = ModalUtil.<DeleteConfirmController>showTransparentModal(
                 "/fxml/delete-confirmation.fxml",
                 accountLabel.getScene().getWindow(),
-                controller -> {
-                    controller.setAccountName(currentAccount.getLabel());
-                    if (controller.isConfirmed()) {
-                        try {
-                            List<Account> accounts = AccountService.load(credentials);
-                            accounts.removeIf(acc -> acc.getId().equals(currentAccount.getId()));
-                            AccountService.save(credentials, accounts);
-                            if (dashboardController != null) dashboardController.refreshAccounts();
-                            ((Stage) accountLabel.getScene().getWindow()).close();
-                        } catch (Exception e) {
-                            AlertUtil.showAlert("Error", "Failed to delete account");
-                        }
-                    }
-                }
+                c -> c.setAccountName(currentAccount.getLabel())
         );
+
+        if (controller != null && controller.isConfirmed()) {
+            try {
+                List<Account> accounts = AccountService.load(credentials);
+                accounts.removeIf(acc -> acc.getId().equals(currentAccount.getId()));
+                AccountService.save(credentials, accounts);
+                if (dashboardController != null) dashboardController.refreshAccounts();
+                ((Stage) accountLabel.getScene().getWindow()).close();
+            } catch (Exception e) {
+                AlertUtil.showAlert("Error", "Failed to delete account");
+            }
+        }
     }
 
     /**
