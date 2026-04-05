@@ -469,23 +469,22 @@ public class DashboardController {
      * @param account the account to delete
      */
     private void deleteAccount(Account account) {
-        ModalUtil.<DeleteConfirmController>showTransparentModal(
+        DeleteConfirmController controller = ModalUtil.showTransparentModal(
                 "/fxml/delete-confirmation.fxml",
                 accountListContainer.getScene().getWindow(),
-                controller -> {
-                    controller.setAccountName(account.getLabel());
-                    if (controller.isConfirmed()) {
-                        try {
-                            List<Account> accounts = AccountService.load(credentials);
-                            accounts.removeIf(acc -> acc.getId().equals(account.getId()));
-                            AccountService.save(credentials, accounts);
-                            refreshAccounts();
-                        } catch (Exception e) {
-                            AlertUtil.showAlert("Error", "Failed to delete account");
-                        }
-                    }
-                }
+                c -> c.setAccountName(account.getLabel())
         );
+
+        if (controller != null && controller.isConfirmed()) {
+            try {
+                List<Account> accounts = AccountService.load(credentials);
+                accounts.removeIf(acc -> acc.getId().equals(account.getId()));
+                AccountService.save(credentials, accounts);
+                refreshAccounts();
+            } catch (Exception e) {
+                AlertUtil.showAlert("Error", "Failed to delete account");
+            }
+        }
     }
 
     /**
