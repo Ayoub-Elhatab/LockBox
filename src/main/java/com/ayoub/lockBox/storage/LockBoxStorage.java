@@ -46,16 +46,17 @@ import java.util.List;
  */
 public class LockBoxStorage {
 
-    private static final String LOCKBOX_FILE = "lockBox.enc";
+    private static final Path LOCKBOX_DIR = Paths.get(System.getenv("APPDATA"), "LockBox");
+    private static final Path LOCKBOX_PATH = LOCKBOX_DIR.resolve("lockBox.enc");
     private static final Gson gson = new Gson();
 
     /**
-     * Checks if the lockBox.enc file exists in the current directory.
+     * Checks if the lockBox.enc file exists in the path directory.
      *
      * @return true if lockBox.enc exists, false otherwise
      */
     public static boolean lockBoxExists() {
-        return new File(LOCKBOX_FILE).exists();
+        return Files.exists(LOCKBOX_PATH);
     }
 
     /**
@@ -88,7 +89,8 @@ public class LockBoxStorage {
         );
 
         String lockBoxJson = gson.toJson(lockBoxData);
-        writeAtomic(LOCKBOX_FILE, lockBoxJson);
+        Files.createDirectories(LOCKBOX_DIR);
+        writeAtomic(LOCKBOX_PATH.toString(), lockBoxJson);
     }
 
     /**
@@ -107,7 +109,7 @@ public class LockBoxStorage {
      * @throws Exception if file read, key derivation, or decryption fails
      */
     public static List<Account> loadLockBox(SecureCredentials credentials) throws Exception {
-        String lockBoxJson = new String(Files.readAllBytes(Paths.get(LOCKBOX_FILE)));
+        String lockBoxJson = new String(Files.readAllBytes(LOCKBOX_PATH));
         LockBoxData lockBoxData = gson.fromJson(lockBoxJson, LockBoxData.class);
 
         byte[] salt = KeyDerivationService.decodeSalt(lockBoxData.salt());

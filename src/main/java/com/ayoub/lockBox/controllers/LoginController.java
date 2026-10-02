@@ -1,6 +1,7 @@
 package com.ayoub.lockBox.controllers;
 
 import com.ayoub.lockBox.security.SecureCredentials;
+import com.ayoub.lockBox.security.SessionManager;
 import com.ayoub.lockBox.service.AccountService;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -116,17 +117,15 @@ public class LoginController {
             return;
         }
 
-        SecureCredentials credentials = null;
         try {
-            credentials = new SecureCredentials(password);
+            SecureCredentials credentials = new SecureCredentials(password);
+            SessionManager.setActive(credentials);
             AccountService.save(credentials, new ArrayList<>());
             loadDashboard(credentials);
 
         } catch (Exception e) {
             showError("Failed to create LockBox: " + e.getMessage());
-            if (credentials != null) {
-                credentials.wipe();
-            }
+            SessionManager.wipeActive();
         }
     }
 
@@ -145,18 +144,16 @@ public class LoginController {
      * @param password the master password entered by the user
      */
     private void handleLogin(String password) {
-        SecureCredentials credentials = null;
         try {
-            credentials = new SecureCredentials(password);
+            SecureCredentials credentials = new SecureCredentials(password);
+            SessionManager.setActive(credentials);
             AccountService.load(credentials);
             loadDashboard(credentials);
 
         } catch (Exception e) {
             showError("Incorrect password. Try again.");
             passwordField.clear();
-            if (credentials != null) {
-                credentials.wipe();
-            }
+            SessionManager.wipeActive();
         }
     }
 

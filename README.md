@@ -7,6 +7,7 @@ A secure, offline password manager built with JavaFX 17 and AES-256-GCM encrypti
 ## Table of Contents
 - [Features](#features)
 - [Security](#security)
+- [Where Your Data Is Stored](#where-your-data-is-stored)
 - [Prerequisites](#prerequisites)
 - [Running the App](#running-the-app)
 - [Building the App](#building-the-app)
@@ -38,8 +39,28 @@ A secure, offline password manager built with JavaFX 17 and AES-256-GCM encrypti
 | Iterations | 100,000 |
 | Salt | 32 bytes (random per lockBox) |
 | IV | 12 bytes (random per save) |
-| Storage | Local encrypted file `lockBox.enc` |
+| Storage | Local encrypted file `lockBox.enc` stored in `%APPDATA%\LockBox\` |
 | Memory | Password stored as `char[]`, wiped after use |
+
+---
+
+## Where Your Data Is Stored
+
+LockBox stores its encrypted vault at:
+
+```
+%APPDATA%\LockBox\lockBox.enc
+```
+
+which resolves to a path like `C:\Users\<you>\AppData\Roaming\LockBox\lockBox.enc`.
+
+This location is used instead of the app's install folder since `Program Files`
+is read-only for normal users — storing data here means LockBox works correctly
+whether run from source or installed as a packaged `.exe`/`.msi`.
+
+> `AppData` is a hidden folder by default. To see it in File Explorer, enable
+> **View → Show → Hidden items**, or type `%APPDATA%\LockBox` directly into
+> the address bar.
 
 ---
 
@@ -85,15 +106,18 @@ pause
 mvn clean package
 ```
 
-### Step 2 - Create standalone EXE
+### Step 2 - Package as EXE/MSI
+
+Packaging is handled by [jfxpackager](https://github.com/Ayoub-Elhatab/jfxpackager),
+a small library that wraps `jlink`/`jpackage` and auto-downloads the JavaFX
+jmods and WiX binaries it needs — no manual jmods/WiX setup required.
+
 ```bash
-jpackage --input target --name LockBox --main-jar LockBox-1.0-SNAPSHOT.jar --main-class com.ayoub.lockBox.Main --icon src\main\resources\icons\lock.ico --type app-image --module-path "C:\Me\programs\javafx-jmods-17.0.18" --add-modules javafx.controls,javafx.fxml,javafx.graphics
+mvn "exec:java" "-Dexec.mainClass=com.ayoub.jfxpackager.Main" "-Dexec.args=--jar target/LockBox-1.0-SNAPSHOT.jar"
 ```
 
-This creates a `LockBox/` folder with a standalone `LockBox.exe` that works without Java installed.
-
-> **Note:** `--module-path` must point to your **JavaFX jmods** folder (not the SDK).
-> Download jmods from: https://gluonhq.com/products/javafx/
+Defaults (name, icon, modules, output type, shortcut/menu options) are read
+from `jfxpackager.properties` in the project root. Output lands in `dist/`.
 
 ---
 

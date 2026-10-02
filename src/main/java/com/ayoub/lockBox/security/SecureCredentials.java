@@ -65,23 +65,6 @@ public class SecureCredentials implements AutoCloseable {
     }
 
     /**
-     * Gets the password as a String.
-     * <p>
-     * <b>Use sparingly</b> - only when required by APIs that don't accept char[].
-     * Creates a String that cannot be wiped from memory.
-     *
-     * @return String containing password
-     * @throws IllegalStateException if credentials have been wiped
-     */
-    public String getPasswordAsString() {
-        if (wiped) {
-            throw new IllegalStateException("Credentials have been wiped");
-        }
-        return new String(password);
-    }
-
-
-    /**
      * Checks if credentials have been wiped.
      *
      * @return true if wiped, false otherwise
